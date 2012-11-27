@@ -2805,6 +2805,31 @@ percentile: percentile of the player
 Packet.infoDeclare(globals(), PacketPokerPlayerStats, Packet, "POKER_PLAYER_STATS", 161) # 161 # 0xa1 # %SEQ%
 
 ########################################
+class PacketPokerTourneyRebuy(PacketSerial):
+    """\
+    Semantics: When a client wants to rebuy during a tourney he sends this packet.
+
+    Direction: client => server
+
+
+    serial: user_serial
+    tourney_serial: serial of the tourney
+    """
+
+    OK = 0
+    NOT_ENOUGH_MONEY = 1
+    REBUY_TIMEOUT_EXEEDED = 2
+    REBUY_LIMIT_EDEEDED = 4
+    OTHER_ERROR = 8
+
+    info = PacketSerial.info + (
+        ('tourney_serial', 0, 'I'),
+    )
+
+Packet.infoDeclare(globals(), PacketPokerTourneyRebuy, PacketPokerId, "POKER_TOURNEY_REBUY", 162)
+
+########################################
+
 class PacketPokerTablePicker(PacketPokerId):
     """\
 
