@@ -2819,7 +2819,7 @@ class PacketPokerTourneyRebuy(PacketSerial):
     OK = 0
     NOT_ENOUGH_MONEY = 1
     REBUY_TIMEOUT_EXEEDED = 2
-    REBUY_LIMIT_EDEEDED = 4
+    REBUY_LIMIT_EXEEDED = 4
     OTHER_ERROR = 8
 
     info = PacketSerial.info + (
