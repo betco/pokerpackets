@@ -122,8 +122,8 @@ class Packet:
                 if field in kwargs:
                     self.__dict__[field] = \
                         kwargs[field].encode('utf-8') \
-                        if format == 'u' and type(kwargs[field]) == unicode \
-                        else kwargs[field]
+                            if format == 'u' and type(kwargs[field]) == unicode \
+                            else kwargs[field]
                 elif type(default) in (str,int,long,float):
                     self.__dict__[field] = default
                 else:
