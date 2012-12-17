@@ -1,0 +1,31 @@
+###########################################################################
+# Generally ignored glob matches
+config.json
+.coverage
+_trial_temp
+/*.changes
+/*.tar.gz
+/*.dsc
+*.deb
+*.debhelper
+*.debhelper.log
+*.[oa]
+*.pyc
+*.loT
+*.lo
+*/po/*.gmo
+*~
+TAGS
+.project
+*.nja
+.pydevproject
+.settings
+
+# created by distutils
+*/build
+
+# created by dpkg-buildpackage
+/*/debian/files
+/*/debian/*/
+/*/debian/*.substvars
+/build/
