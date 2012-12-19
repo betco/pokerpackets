@@ -1,4 +1,4 @@
-Source: poker-packets
+Source: pokerpackets
 Section: python
 Priority: optional
 Maintainer: Andor Goetzendorff <andor@pokermania.de>
