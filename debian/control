@@ -15,7 +15,8 @@ Architecture: all
 Depends:
     ${misc:Depends},
     ${python:Depends},
-    python-reflogging
+    python-reflogging,
+    python-simplejson
 Description: poker-packets
  this package contains all needed datastructures (called "Poker Packets") needed for
  the communication with several python-poker components such as python-poker-network. 
