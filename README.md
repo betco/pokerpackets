@@ -1,4 +1,5 @@
-h1. poker-packets
+Poker Packets
+=============
 
 this package contains all files needed to
 
