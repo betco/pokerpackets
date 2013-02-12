@@ -1729,6 +1729,7 @@ class PacketPokerTourney(Packet):
         ('variant', 'holdem', 's'),
         ('state', 'announced', 's'),
         ('name', 'noname', 's'),
+        ('skin', 'default', 's')
         )
     
 Packet.infoDeclare(globals(), PacketPokerTourney, Packet, "POKER_TOURNEY", 112) # 112 # 0x70
