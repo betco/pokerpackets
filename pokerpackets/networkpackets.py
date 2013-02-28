@@ -824,6 +824,8 @@ variant: base name of the variant that must match a poker.<variant>.xml
 betting_structure: base name of the betting structure that must
                    match a poker.<betting_structure>.xml file containing
                    a full description of the betting structure.
+                   The betting_structure has a naming convention:
+                   <small blind>-<big_blind>_<min buy_in>-<max buy_in>_<something>
 id: integer used as the unique id of the game and referred to
     with the "game_id" field in all other packets.
 seats: maximum number of seats in this game.
