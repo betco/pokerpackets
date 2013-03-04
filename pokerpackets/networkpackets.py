@@ -268,7 +268,7 @@ class PacketPokerMessage(PacketPokerId):
     """
 
     info = PacketPokerId.info + (
-        ('string', '', 'u' ), 
+        ('string', '', 's' ), 
         )
         
 Packet.infoDeclare(globals(), PacketPokerMessage, Packet, "POKER_MESSAGE", 52) # 52 # 0x34
@@ -937,7 +937,7 @@ game_id: integer uniquely identifying a game.
 """
 
     info = PacketPokerId.info + (
-        ('timeout', sys.maxint, 'I'),
+        ('timeout', 0, 'I'),
         ('when', -1, 'no net'),
         )
 
@@ -1003,7 +1003,7 @@ game_id: integer uniquely identifying a game.
 to_game_id: integer uniquely identifying a game.
 """
 
-    info = PacketPokerSeat.info + ( ('to_game_id', sys.maxint, 'I'), )
+    info = PacketPokerSeat.info + ( ('to_game_id', 0, 'I'), )
 
 Packet.infoDeclare(globals(),PacketPokerTableMove, Packet, "POKER_TABLE_MOVE", 80) # 80 # 0x50
 ########################################
@@ -1129,7 +1129,7 @@ message: a text message string (2^16 long max)
 game_id: integer uniquely identifying a game.
 """
 
-    info = PacketPokerId.info + ( ('message', '', 'u'), )
+    info = PacketPokerId.info + ( ('message', '', 's'), )
    
 Packet.infoDeclare(globals(),PacketPokerChat , Packet, "POKER_CHAT", 86) # 86 # 0x56
 ########################################
@@ -1247,7 +1247,7 @@ hands: list of integers uniquely identifying a hand to the server.
 
     info = PacketPokerHandSelect.info + ( 
         ('hands', [], 'Il'),
-        ('total', sys.maxint, 'I'),
+        ('total', 0, 'I'),
         )
     
 Packet.infoDeclare(globals(), PacketPokerHandList, Packet, "POKER_HAND_LIST", 90) # 90 # 0x5a
@@ -2238,7 +2238,7 @@ money: the money won
     info = PacketPokerId.info + ( 
         ('players', 0, 'I'),
         ('money', 0, 'I'),
-        ('rank', sys.maxint, 'I'),
+        ('rank', 0, 'I'),
         )
 
 Packet.infoDeclare(globals(), PacketPokerTourneyRank, Packet, "POKER_TOURNEY_RANK", 137) # 137 # 0x89
@@ -3016,11 +3016,6 @@ class PacketPokerLongPollReturn(Packet):
 Packet.infoDeclare(globals(), PacketPokerLongPollReturn, Packet, "POKER_LONG_POLL_RETURN", 168) # 168 # 0xa8 # %SEQ%
 
 _TYPES = range(50,169)
-
-# Interpreted by emacs
-# Local Variables:
-# compile-command: "perl -pi -e 'if(/%SEQ%/) { $s = 49 if(!defined($s)); $s++; $h = sprintf(q/0x%x/, $s); s/\\d+[ \\w#]+#/$s # $h #/; }' pokerpackets.py"
-# End:
 
 #
 # only export things starting with Packet or PACKET_

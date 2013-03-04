@@ -26,32 +26,8 @@
 #
 from struct import pack, unpack
 
-from packets import Packet
+from packets import Packet, type2type_id, type_id2type
 from networkpackets import *
-
-def chips2amount(chips):
-    amount = 0
-    for i in xrange(len(chips) / 2):
-        amount += chips[i*2] * chips[i*2 + 1]
-    return amount
-
-class PokerClientPackets:
-    @staticmethod
-    def unpackchips(block):
-        amount = int(unpack('!I', block[:4])[0])
-        if amount > 0:
-            chips = (1, amount)
-        else:
-            chips = []
-        return ( block[4:], chips )
-    
-Packet.format_info['c'] = {
-    'pack': lambda data: pack('!I', chips2amount(data)),
-    'unpack': PokerClientPackets.unpackchips,
-    'calcsize': lambda data: 4,
-    }
-
-########################################
 
 class PacketPokerBestCards(PacketPokerCards):
     """\
@@ -592,11 +568,6 @@ hand: readable player best hand.
 Packet.infoDeclare(globals(), PacketPokerPlayerHandStrength, PacketPokerId, "POKER_PLAYER_HAND_STRENGTH", 210) # 0xd2 # %SEQ%
 
 _TYPES = range(170,254)
-
-# Interpreted by emacs
-# Local Variables:
-# compile-command: "perl -pi -e 'if(/%SEQ%/) { $s = 169 if(!defined($s)); $s++; $h = sprintf(q/0x%x/, $s); s/\\d+[) \\w#]+#/$s) # $h #/; }' pokerclientpackets.py"
-# End:
 
 #
 # only export things starting with Packet or PACKET_
