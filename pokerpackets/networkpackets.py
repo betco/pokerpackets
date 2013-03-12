@@ -757,6 +757,7 @@ game_id: integer uniquely identifying a game.
 
     FULL = 1
     GENERAL_FAILURE = 2
+    DOES_NOT_EXIST = 3
     NOT_JOINED = 1001
 
 Packet.infoDeclare(globals(), PacketPokerTableJoin, Packet, "POKER_TABLE_JOIN", 71) # 71 # 0x47
