@@ -1721,6 +1721,7 @@ class PacketPokerTourney(Packet):
         ('rake', 0, 'I'),
         ('start_time', 0, 'I'),
         ('rebuy_time_remaining', 0, 'I'),
+        ('kick_timeout', 0, 'I'),
         ('sit_n_go', 'y', 'cbool'),
         ('players_quota', 0, 'H'),
         ('registered', 0, 'H'),
