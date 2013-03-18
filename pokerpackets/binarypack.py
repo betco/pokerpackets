@@ -22,7 +22,10 @@ def pack(packet):
     for attr, default, s_type in packet_type.info:
         if s_type == 'no net':
             continue
-        data.append(_s_type2pack[s_type](packet.__dict__.get(attr, default)))
+        try:
+            data.append(_s_type2pack[s_type](packet.__dict__.get(attr, default)))
+        except:
+            log.error("failed to pack, s_type %s, attr %s, value %r", s_type, attr, packet.__dict__.get(attr))
 
     data = ''.join(data)
     return _s_packet_head.pack(type_id, len(data)) + data
