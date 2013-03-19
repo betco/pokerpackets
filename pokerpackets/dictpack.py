@@ -48,7 +48,7 @@ def packet2dict(packet, numeric_type=True):
             money = getattr(packet, attr)
             result[attr] = {}
             for k, v in money.iteritems():
-                result[attr]['X%d' % (k,) if type(k) == int else k] = v
+                result[attr]['X%d' % (k,) if type(k) in (int, long) else k] = v
         else:
             result[attr] = getattr(packet, attr)
 
