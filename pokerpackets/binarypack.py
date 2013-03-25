@@ -26,6 +26,7 @@ def pack(packet):
             data.append(_s_type2pack[s_type](packet.__dict__.get(attr, default)))
         except:
             log.error("failed to pack, s_type %s, attr %s, value %r", s_type, attr, packet.__dict__.get(attr))
+            raise
 
     data = ''.join(data)
     return _s_packet_head.pack(type_id, len(data)) + data
