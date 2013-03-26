@@ -25,93 +25,93 @@ class BinaryPackTestCase(unittest.TestCase):
     # private functions
 
     def test__pack_I(self):
-        assert binarypack._pack_I(StringIO(), 0).getvalue() == b"\x00\x00\x00\x00"
-        assert binarypack._pack_I(StringIO(), 1).getvalue() == b"\x00\x00\x00\x01"
-        assert binarypack._pack_I(StringIO(), 4294967295).getvalue() == b"\xFF\xFF\xFF\xFF"
+        buf = [] ; binarypack._pack_I(0, buf) ; assert "".join(buf) == b"\x00\x00\x00\x00"
+        buf = [] ; binarypack._pack_I(1, buf) ; assert "".join(buf) == b"\x00\x00\x00\x01"
+        buf = [] ; binarypack._pack_I(4294967295, buf) ; assert "".join(buf) == b"\xFF\xFF\xFF\xFF"
 
     def test__pack_Q(self):
-        assert binarypack._pack_Q(StringIO(), 0).getvalue() == b"\x00\x00\x00\x00\x00\x00\x00\x00"
-        assert binarypack._pack_Q(StringIO(), 1).getvalue() == b"\x00\x00\x00\x00\x00\x00\x00\x01"
-        assert binarypack._pack_Q(StringIO(), 18446744073709551615L).getvalue() == b"\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF"
+        buf = [] ; binarypack._pack_Q(0, buf) ; assert "".join(buf) == b"\x00\x00\x00\x00\x00\x00\x00\x00"
+        buf = [] ; binarypack._pack_Q(1, buf) ; assert "".join(buf) == b"\x00\x00\x00\x00\x00\x00\x00\x01"
+        buf = [] ; binarypack._pack_Q(18446744073709551615L, buf) ; assert "".join(buf) == b"\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF"
 
     def test__pack_B(self):
-        assert binarypack._pack_B(StringIO(), 0).getvalue() == b"\x00"
-        assert binarypack._pack_B(StringIO(), 1).getvalue() == b"\x01"
-        assert binarypack._pack_B(StringIO(), 255).getvalue() == b"\xFF"
+        buf = [] ; binarypack._pack_B(0, buf) ; assert "".join(buf) == b"\x00"
+        buf = [] ; binarypack._pack_B(1, buf) ; assert "".join(buf) == b"\x01"
+        buf = [] ; binarypack._pack_B(255, buf) ; assert "".join(buf) == b"\xFF"
 
     def test__pack_b(self):
-        assert binarypack._pack_b(StringIO(), 0).getvalue() == b"\x00"
-        assert binarypack._pack_b(StringIO(), 10).getvalue() == b"\x0A"
-        assert binarypack._pack_b(StringIO(), -1).getvalue() == b"\xFF"
+        buf = [] ; binarypack._pack_b(0, buf) ; assert "".join(buf) == b"\x00"
+        buf = [] ; binarypack._pack_b(10, buf) ; assert "".join(buf) == b"\x0A"
+        buf = [] ; binarypack._pack_b(-1, buf) ; assert "".join(buf) == b"\xFF"
 
     def test__pack_Bnone(self):
-        assert binarypack._pack_Bnone(StringIO(), 0).getvalue() == b"\x00"
-        assert binarypack._pack_Bnone(StringIO(), 10).getvalue() == b"\x0A"
-        assert binarypack._pack_Bnone(StringIO(), None).getvalue() == b"\xFF"
+        buf = [] ; binarypack._pack_Bnone(0, buf) ; assert "".join(buf) == b"\x00"
+        buf = [] ; binarypack._pack_Bnone(10, buf) ; assert "".join(buf) == b"\x0A"
+        buf = [] ; binarypack._pack_Bnone(None, buf) ; assert "".join(buf) == b"\xFF"
 
     def test__pack_bool(self):
-        assert binarypack._pack_bool(StringIO(), 5).getvalue() == b"\x01"
-        assert binarypack._pack_bool(StringIO(), True).getvalue() == b"\x01"
-        assert binarypack._pack_bool(StringIO(), False).getvalue() == b"\x00"
+        buf = [] ; binarypack._pack_bool(5, buf) ; assert "".join(buf) == b"\x01"
+        buf = [] ; binarypack._pack_bool(True, buf) ; assert "".join(buf) == b"\x01"
+        buf = [] ; binarypack._pack_bool(False, buf) ; assert "".join(buf) == b"\x00"
 
     def test__pack_cbool(self):
-        assert binarypack._pack_cbool(StringIO(), 'y').getvalue() == b"\x01"
-        assert binarypack._pack_cbool(StringIO(), 'n').getvalue() == b"\x00"
-        assert binarypack._pack_cbool(StringIO(), 'test').getvalue() == b"\x00"
+        buf = [] ; binarypack._pack_cbool('y', buf) ; assert "".join(buf) == b"\x01"
+        buf = [] ; binarypack._pack_cbool('n', buf) ; assert "".join(buf) == b"\x00"
+        buf = [] ; binarypack._pack_cbool('test', buf) ; assert "".join(buf) == b"\x00"
 
     def test__pack_H(self):
-        assert binarypack._pack_H(StringIO(), 0).getvalue() == b"\x00\x00"
-        assert binarypack._pack_H(StringIO(), 1).getvalue() == b"\x00\x01"
-        assert binarypack._pack_H(StringIO(), 65535).getvalue() == b"\xFF\xFF"
+        buf = [] ; binarypack._pack_H(0, buf) ; assert "".join(buf) == b"\x00\x00"
+        buf = [] ; binarypack._pack_H(1, buf) ; assert "".join(buf) == b"\x00\x01"
+        buf = [] ; binarypack._pack_H(65535, buf) ; assert "".join(buf) == b"\xFF\xFF"
 
     def test__pack_string(self):
-        assert binarypack._pack_string(StringIO(), "").getvalue() == b"\x00\x00"
-        assert binarypack._pack_string(StringIO(), "test").getvalue() == b"\x00\x04test"
-        assert binarypack._pack_string(StringIO(), u"übel".encode("utf-8")).getvalue() == b"\x00\x05\xC3\xBCbel"
+        buf = [] ; binarypack._pack_string("", buf) ; assert "".join(buf) == b"\x00\x00"
+        buf = [] ; binarypack._pack_string("test", buf) ; assert "".join(buf) == b"\x00\x04test"
+        buf = [] ; binarypack._pack_string(u"übel".encode("utf-8"), buf) ; assert "".join(buf) == b"\x00\x05\xC3\xBCbel"
 
     def test__pack_bstring(self):
-        assert binarypack._pack_bstring(StringIO(), "").getvalue() == b"\x00\x00"
-        assert binarypack._pack_bstring(StringIO(), "test").getvalue() == b"\x00\x04test"
-        assert binarypack._pack_bstring(StringIO(), True).getvalue() == b"\x00\x05_TRUE"
-        assert binarypack._pack_bstring(StringIO(), False).getvalue() == b"\x00\x06_FALSE"
+        buf = [] ; binarypack._pack_bstring("", buf) ; assert "".join(buf) == b"\x00\x00"
+        buf = [] ; binarypack._pack_bstring("test", buf) ; assert "".join(buf) == b"\x00\x04test"
+        buf = [] ; binarypack._pack_bstring(True, buf) ; assert "".join(buf) == b"\x00\x05_TRUE"
+        buf = [] ; binarypack._pack_bstring(False, buf) ; assert "".join(buf) == b"\x00\x06_FALSE"
 
     def test__pack_j(self):
-        assert binarypack._pack_j(StringIO(), None).getvalue() == b"\x00\x04null"
-        assert binarypack._pack_j(StringIO(), {'test': 1}).getvalue() == b"\x00\x0B{\"test\": 1}"
+        buf = [] ; binarypack._pack_j(None, buf) ; assert "".join(buf) == b"\x00\x04null"
+        buf = [] ; binarypack._pack_j({'test': 1}, buf) ; assert "".join(buf) == b"\x00\x0B{\"test\": 1}"
 
     def test__pack_Bl(self):
-        assert binarypack._pack_Bl(StringIO(), []).getvalue() == b"\x00"
-        assert binarypack._pack_Bl(StringIO(), [1, 2, 3]).getvalue() == b"\x03\x01\x02\x03"
+        buf = [] ; binarypack._pack_Bl([], buf) ; assert "".join(buf) == b"\x00"
+        buf = [] ; binarypack._pack_Bl([1, 2, 3], buf) ; assert "".join(buf) == b"\x03\x01\x02\x03"
 
     def test__pack_Hl(self):
-        assert binarypack._pack_Hl(StringIO(), []).getvalue() == b"\x00"
-        assert binarypack._pack_Hl(StringIO(), [1, 2, 3]).getvalue() == b"\x03\x00\x01\x00\x02\x00\x03"
+        buf = [] ; binarypack._pack_Hl([], buf) ; assert "".join(buf) == b"\x00"
+        buf = [] ; binarypack._pack_Hl([1, 2, 3], buf) ; assert "".join(buf) == b"\x03\x00\x01\x00\x02\x00\x03"
 
     def test__pack_Il(self):
-        assert binarypack._pack_Il(StringIO(), []).getvalue() == b"\x00"
-        assert binarypack._pack_Il(StringIO(), [1, 2, 3]).getvalue() == b"\x03\x00\x00\x00\x01\x00\x00\x00\x02\x00\x00\x00\x03"
+        buf = [] ; binarypack._pack_Il([], buf) ; assert "".join(buf) == b"\x00"
+        buf = [] ; binarypack._pack_Il([1, 2, 3], buf) ; assert "".join(buf) == b"\x03\x00\x00\x00\x01\x00\x00\x00\x02\x00\x00\x00\x03"
 
     def test__pack_pl(self):
-        assert binarypack._pack_pl(StringIO(), []).getvalue() == b"\x00\x00"
-        assert binarypack._pack_pl(StringIO(), [packets.PacketLogin(), packets.PacketLogin()]).getvalue() == \
+        buf = [] ; binarypack._pack_pl([], buf) ; assert "".join(buf) == b"\x00\x00"
+        buf = [] ; binarypack._pack_pl([packets.PacketLogin(), packets.PacketLogin()], buf) ; assert "".join(buf) == \
             b'\x00\x02\n\x00\x12\x00\x07unknown\x00\x07' \
             b'unknown\n\x00\x12\x00\x07unknown\x00\x07unknown'
 
     def test__pack_money(self):
-        assert binarypack._pack_money(StringIO(), {}).getvalue() == b"\x00\x00"
-        assert binarypack._pack_money(StringIO(), {1: (1, 2, 3)}).getvalue() == \
+        buf = [] ; binarypack._pack_money({}, buf) ; assert "".join(buf) == b"\x00\x00"
+        buf = [] ; binarypack._pack_money({1: (1, 2, 3)}, buf) ; assert "".join(buf) == \
             b'\x00\x01\x00\x00\x00\x01\x00\x00' \
             b'\x00\x00\x00\x00\x00\x01\x00\x00' \
             b'\x00\x00\x00\x00\x00\x02\x00\x00' \
             b'\x00\x00\x00\x00\x00\x03'
 
     def test__pack_players(self):
-        assert binarypack._pack_players(StringIO(), []).getvalue() == b"\x00\x00"
-        assert binarypack._pack_players(StringIO(), [('name', 10, 0)]).getvalue() == b"\x00\x01\x00\x04name\x00\x00\x00\n\x00"
+        buf = [] ; binarypack._pack_players([], buf) ; assert "".join(buf) == b"\x00\x00"
+        buf = [] ; binarypack._pack_players([('name', 10, 0)], buf) ; assert "".join(buf) == b"\x00\x01\x00\x04name\x00\x00\x00\n\x00"
 
     def test__pack_c(self):
-        assert binarypack._pack_c(StringIO(), []).getvalue() == b"\x00\x00\x00\x00"
-        assert binarypack._pack_c(StringIO(), [10, 100]).getvalue() == b"\x00\x00\x03\xE8"
+        buf = [] ; binarypack._pack_c([], buf) ; assert "".join(buf) == b"\x00\x00\x00\x00"
+        buf = [] ; binarypack._pack_c([10, 100], buf) ; assert "".join(buf) == b"\x00\x00\x03\xE8"
 
     def test__unpack_I(self):
         assert binarypack._unpack_I(b"\x00\x00\x00\x00", 0) == (4, 0)

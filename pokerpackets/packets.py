@@ -78,7 +78,7 @@ class Packet:
     def __eq__(self, other):
         return \
             self.__class__ is other.__class__ and \
-            self.__dict__ == other.__dict__
+            not any(getattr(self, attr) != getattr(other, attr) for attr, _default, _s_info in self.__class__.info)
 
     @staticmethod
     def infoDeclare(dictionary, packet_type, base_type, name, index):
@@ -93,6 +93,36 @@ class Packet:
         packet_type.type = index
         for attr, default, _s_type in packet_type.info:
             setattr(packet_type, attr, default)
+
+        # binpack info
+        packet_type._binarypack_info = [(attr, s_type) for attr, _default, s_type in packet_type.info if s_type != 'no net']
+
+        # fast pack
+        struct_format = '!BH'
+        attr_names = []
+        for attr, default, s_type in packet_type.info:
+
+            # skip 'no net' attributes
+            if s_type == 'no net':
+                continue
+
+            # break if type is not fixed length and no other evaluation is needed
+            if s_type not in ('bool', 'B', 'H', 'I', 'Q'):
+                break
+
+            # 
+            struct_format += s_type
+            attr_names.append(attr)
+
+        else:
+            if attr_names:
+                fast_struct = Struct(struct_format)
+                fast_struct_size = fast_struct.size
+                packet_type._binarypack_fast_pack = lambda p: fast_struct.pack(
+                    index,
+                    fast_struct_size,
+                    *[getattr(p, attr) for attr in attr_names]
+                )
 
         # insert type into dictionary
         dictionary['type2type_id'][packet_type] = index

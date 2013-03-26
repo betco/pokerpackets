@@ -3,10 +3,11 @@ from pokerpackets import log as packet_log
 log = packet_log.get_child('binarypack')
 
 from pokerpackets import packets
+from pokerpackets.packets import type2type_id
 
 import simplejson
 from struct import Struct
-from cStringIO import StringIO
+from string import join
 
 def pack(packet):
     """
@@ -16,34 +17,29 @@ def pack(packet):
 
     returns: head + content of packet as binary data (string)
     """
-    buf = StringIO()
-    try:
-        _pack(buf, packet)
-        return buf.getvalue()
-    finally:
-        buf.close()
 
-def _pack(buf, packet):
+    if '_binarypack_fast_pack' in packet.__class__.__dict__:
+        # print 'fast pack', packet.info
+        return packet._binarypack_fast_pack()
+
+    buf = []
+    _pack(packet, buf)
+
+    return join(buf, b'')
+
+def _pack(packet, buf):
     packet_type = packet.__class__
-    type_id = packets.type2type_id[packet_type]
+    type_id = type2type_id[packet_type]
 
-    buf_pos_start = buf.tell()
-    buf.write(_s_packet_head.pack(type_id, 0))
+    buf_pos = len(buf)
 
-    for attr, default, s_type in packet_type.info:
-        if s_type == 'no net':
-            continue
-        try:
-            _s_type2pack[s_type](buf, packet.__dict__.get(attr, default))
-        except:
-            print("failed to pack, s_type %s, attr %s, value %r, func: %r", s_type, attr, packet.__dict__.get(attr, default), _s_type2pack[s_type])
-            raise
+    buf.append(None)
 
-    buf_pos_end = buf.tell()
-    buf.seek(buf_pos_start)
-    buf.write(_s_packet_head.pack(type_id, buf_pos_end - buf_pos_start - _s_packet_head.size))
-    buf.seek(buf_pos_end)
-    return buf
+    length = sum([_s_type2pack[s_type](getattr(packet, attr), buf) for attr, s_type in packet_type._binarypack_info])
+
+    buf[buf_pos] = _s_packet_head.pack(type_id, length)
+
+    return _s_packet_head.size + length
 
 def unpack(data, offset=0):
     """
@@ -71,108 +67,118 @@ def unpack(data, offset=0):
 
     return (offset, packet)
 
-def _pack_I(buf, val):
-    buf.write(_s_I.pack(val))
-    return buf
+def _pack_I(val, buf):
+    buf.append(_s_I.pack(val))
+    return _s_I.size
 
-def _pack_Q(buf, val):
-    buf.write(_s_Q.pack(val))
-    return buf
+def _pack_Q(val, buf):
+    buf.append(_s_Q.pack(val))
+    return _s_Q.size
 
-def _pack_B(buf, val):
-    buf.write(_s_B.pack(val))
-    return buf
+def _pack_B(val, buf):
+    buf.append(_s_B.pack(val))
+    return _s_B.size
 
-def _pack_b(buf, val):
-    buf.write(_s_B.pack(255 if val == -1 else val))
-    return buf
+def _pack_b(val, buf):
+    buf.append(_s_B.pack(255 if val == -1 else val))
+    return _s_B.size
 
-def _pack_Bnone(buf, val):
-    buf.write(_s_B.pack(255 if val == None else val))
-    return buf
+def _pack_Bnone(val, buf):
+    buf.append(_s_B.pack(255 if val == None else val))
+    return _s_B.size
 
-def _pack_bool(buf, val):
-    buf.write(_s_B.pack(1 if val else 0))
-    return buf
+def _pack_bool(val, buf):
+    buf.append(_s_B.pack(1 if val else 0))
+    return _s_B.size
 
-def _pack_cbool(buf, val):
-    buf.write(_s_B.pack(1 if val == 'y' else 0))
-    return buf
+def _pack_cbool(val, buf):
+    buf.append(_s_B.pack(1 if val == 'y' else 0))
+    return _s_B.size
 
-def _pack_H(buf, val):
-    buf.write(_s_H.pack(val))
-    return buf
+def _pack_H(val, buf):
+    buf.append(_s_H.pack(val))
+    return _s_B.size
 
-def _pack_string(buf, val):
-    buf.write(_s_H.pack(len(val)) + val)
-    return buf
+def _pack_string(val, buf):
+    val_len = len(val)
+    buf.append(_s_H.pack(val_len))
+    buf.append(val)
+    return _s_H.size + val_len
 
-def _pack_bstring(buf, val):
+def _pack_bstring(val, buf):
     if val == True: val = '_TRUE'
     elif val == False: val = '_FALSE'
-    buf.write(_s_H.pack(len(val)) + val)
-    return buf
+    val_len = len(val)
+    buf.append(_s_H.pack(val_len))
+    buf.append(val)
+    return _s_H.size + val_len
 
-def _pack_j(buf, val):
+def _pack_j(val, buf):
     val = simplejson.dumps(val)
-    buf.write(_s_H.pack(len(val)) + val)
-    return buf
+    val_len = len(val)
+    buf.append(_s_H.pack(val_len))
+    buf.append(val)
+    return _s_H.size + val_len
 
-def _pack_Bl(buf, _list):
-    struct_format = '!B%dB' % (len(_list),)
+def _pack_Bl(_list, buf, __cache={}):
+    list_len = len(_list)
     try:
-        struct = _struct_cache[struct_format]
+        struct = __cache[list_len]
     except KeyError:
-        struct = Struct(struct_format)
-        _struct_cache[struct_format] = struct
-    buf.write(struct.pack(len(_list), *_list))
-    return buf
+        struct = __cache[list_len] = Struct('!B'+str(list_len)+'B')
+    buf.append(struct.pack(list_len, *_list))
+    return struct.size
 
-def _pack_Hl(buf, _list):
-    struct_format = '!B%dH' % (len(_list),)
+def _pack_Hl(_list, buf, __cache={}):
+    list_len = len(_list)
     try:
-        struct = _struct_cache[struct_format]
+        struct = __cache[list_len]
     except KeyError:
-        struct = Struct(struct_format)
-        _struct_cache[struct_format] = struct
-    buf.write(struct.pack(len(_list), *_list))
-    return buf
+        struct = __cache[list_len] = Struct('!B'+str(list_len)+'H')
+    buf.append(struct.pack(list_len, *_list))
+    return struct.size
 
-def _pack_Il(buf, _list):
-    struct_format = '!B%dI' % (len(_list),)
+def _pack_Il(_list, buf, __cache={}):
+    list_len = len(_list)
     try:
-        struct = _struct_cache[struct_format]
+        struct = __cache[list_len]
     except KeyError:
-        struct = Struct(struct_format)
-        _struct_cache[struct_format] = struct
-    buf.write(struct.pack(len(_list), *_list))
-    return buf
+        struct = __cache[list_len] = Struct('!B'+str(list_len)+'I')
+    buf.append(struct.pack(list_len, *_list))
+    return struct.size
 
-def _pack_pl(buf, packets):
-    buf.write(_s_H.pack(len(packets)))
-    [_pack(buf, packet) for packet in packets]
-    return buf
+def _pack_pl(packets, buf):
+    packets_len = len(packets)
+    buf.append(_s_H.pack(packets_len))
+    length = sum([_pack(packet, buf) for packet in packets])
+    return _s_H.size + length
 
-def _pack_money(buf, val):
-    buf.write(_s_H.pack(len(val)))
+def _pack_money(val, buf):
+    val_len = len(val)
+    buf.append(_s_H.pack(val_len))
     for currency, (money, in_game, points) in val.iteritems():
-        buf.write(_s_money.pack(currency, money, in_game, points))
-    return buf
+        buf.append(_s_money.pack(currency, money, in_game, points))
+    return _s_H.size + _s_money.size * val_len
 
-def _pack_players(buf, players):
-    buf.write(_s_H.pack(len(players)))
+def _pack_players(players, buf):
+    players_len = len(players)
+    buf.append(_s_H.pack(players_len))
+    length = 0
     for name, chips, flags in players:
-        buf.write(_s_H.pack(len(name)))
-        buf.write(name)
-        buf.write(_s_IB.pack(chips, flags))
-    return buf
+        name_len = len(name)
+        buf.append(_s_H.pack(name_len))
+        buf.append(name)
+        buf.append(_s_IB.pack(chips, flags))
+        length += _s_H.size + name_len + _s_IB.size
 
-def _pack_c(buf, chips):
+    return _s_H.size + length
+
+def _pack_c(chips, buf):
     amount = 0
     for i in xrange(len(chips) / 2):
         amount += chips[i * 2] * chips[i * 2 + 1]
-    buf.write(_s_I.pack(amount))
-    return buf
+    buf.append(_s_I.pack(amount))
+    return _s_I.size
 
 def _unpack_I(data, offset):
     value, = _s_I.unpack_from(data, offset)
