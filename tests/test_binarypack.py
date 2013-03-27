@@ -25,93 +25,93 @@ class BinaryPackTestCase(unittest.TestCase):
     # private functions
 
     def test__pack_I(self):
-        buf = [] ; binarypack._pack_I(0, buf) ; assert "".join(buf) == b"\x00\x00\x00\x00"
-        buf = [] ; binarypack._pack_I(1, buf) ; assert "".join(buf) == b"\x00\x00\x00\x01"
-        buf = [] ; binarypack._pack_I(4294967295, buf) ; assert "".join(buf) == b"\xFF\xFF\xFF\xFF"
+        buf = [] ; assert binarypack._pack_I(0, buf) == 4 ; assert "".join(buf) == b"\x00\x00\x00\x00"
+        buf = [] ; assert binarypack._pack_I(1, buf) == 4 ; assert "".join(buf) == b"\x00\x00\x00\x01"
+        buf = [] ; assert binarypack._pack_I(4294967295, buf) == 4 ; assert "".join(buf) == b"\xFF\xFF\xFF\xFF"
 
     def test__pack_Q(self):
-        buf = [] ; binarypack._pack_Q(0, buf) ; assert "".join(buf) == b"\x00\x00\x00\x00\x00\x00\x00\x00"
-        buf = [] ; binarypack._pack_Q(1, buf) ; assert "".join(buf) == b"\x00\x00\x00\x00\x00\x00\x00\x01"
-        buf = [] ; binarypack._pack_Q(18446744073709551615L, buf) ; assert "".join(buf) == b"\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF"
+        buf = [] ; assert binarypack._pack_Q(0, buf) == 8 ; assert "".join(buf) == b"\x00\x00\x00\x00\x00\x00\x00\x00"
+        buf = [] ; assert binarypack._pack_Q(1, buf) == 8 ; assert "".join(buf) == b"\x00\x00\x00\x00\x00\x00\x00\x01"
+        buf = [] ; assert binarypack._pack_Q(18446744073709551615L, buf) == 8 ; assert "".join(buf) == b"\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF"
 
     def test__pack_B(self):
-        buf = [] ; binarypack._pack_B(0, buf) ; assert "".join(buf) == b"\x00"
-        buf = [] ; binarypack._pack_B(1, buf) ; assert "".join(buf) == b"\x01"
-        buf = [] ; binarypack._pack_B(255, buf) ; assert "".join(buf) == b"\xFF"
+        buf = [] ; assert binarypack._pack_B(0, buf) == 1 ; assert "".join(buf) == b"\x00"
+        buf = [] ; assert binarypack._pack_B(1, buf) == 1 ; assert "".join(buf) == b"\x01"
+        buf = [] ; assert binarypack._pack_B(255, buf) == 1 ; assert "".join(buf) == b"\xFF"
 
     def test__pack_b(self):
-        buf = [] ; binarypack._pack_b(0, buf) ; assert "".join(buf) == b"\x00"
-        buf = [] ; binarypack._pack_b(10, buf) ; assert "".join(buf) == b"\x0A"
-        buf = [] ; binarypack._pack_b(-1, buf) ; assert "".join(buf) == b"\xFF"
+        buf = [] ; assert binarypack._pack_b(0, buf) == 1 ; assert "".join(buf) == b"\x00"
+        buf = [] ; assert binarypack._pack_b(10, buf) == 1 ; assert "".join(buf) == b"\x0A"
+        buf = [] ; assert binarypack._pack_b(-1, buf) == 1 ; assert "".join(buf) == b"\xFF"
 
     def test__pack_Bnone(self):
-        buf = [] ; binarypack._pack_Bnone(0, buf) ; assert "".join(buf) == b"\x00"
-        buf = [] ; binarypack._pack_Bnone(10, buf) ; assert "".join(buf) == b"\x0A"
-        buf = [] ; binarypack._pack_Bnone(None, buf) ; assert "".join(buf) == b"\xFF"
+        buf = [] ; assert binarypack._pack_Bnone(0, buf) == 1 ; assert "".join(buf) == b"\x00"
+        buf = [] ; assert binarypack._pack_Bnone(10, buf) == 1 ; assert "".join(buf) == b"\x0A"
+        buf = [] ; assert binarypack._pack_Bnone(None, buf) == 1 ; assert "".join(buf) == b"\xFF"
 
     def test__pack_bool(self):
-        buf = [] ; binarypack._pack_bool(5, buf) ; assert "".join(buf) == b"\x01"
-        buf = [] ; binarypack._pack_bool(True, buf) ; assert "".join(buf) == b"\x01"
-        buf = [] ; binarypack._pack_bool(False, buf) ; assert "".join(buf) == b"\x00"
+        buf = [] ; assert binarypack._pack_bool(5, buf) == 1 ; assert "".join(buf) == b"\x01"
+        buf = [] ; assert binarypack._pack_bool(True, buf) == 1 ; assert "".join(buf) == b"\x01"
+        buf = [] ; assert binarypack._pack_bool(False, buf) == 1 ; assert "".join(buf) == b"\x00"
 
     def test__pack_cbool(self):
-        buf = [] ; binarypack._pack_cbool('y', buf) ; assert "".join(buf) == b"\x01"
-        buf = [] ; binarypack._pack_cbool('n', buf) ; assert "".join(buf) == b"\x00"
-        buf = [] ; binarypack._pack_cbool('test', buf) ; assert "".join(buf) == b"\x00"
+        buf = [] ; assert binarypack._pack_cbool('y', buf) == 1 ; assert "".join(buf) == b"\x01"
+        buf = [] ; assert binarypack._pack_cbool('n', buf) == 1 ; assert "".join(buf) == b"\x00"
+        buf = [] ; assert binarypack._pack_cbool('test', buf) == 1 ; assert "".join(buf) == b"\x00"
 
     def test__pack_H(self):
-        buf = [] ; binarypack._pack_H(0, buf) ; assert "".join(buf) == b"\x00\x00"
-        buf = [] ; binarypack._pack_H(1, buf) ; assert "".join(buf) == b"\x00\x01"
-        buf = [] ; binarypack._pack_H(65535, buf) ; assert "".join(buf) == b"\xFF\xFF"
+        buf = [] ; assert binarypack._pack_H(0, buf) == 2 ; assert "".join(buf) == b"\x00\x00"
+        buf = [] ; assert binarypack._pack_H(1, buf) == 2 ; assert "".join(buf) == b"\x00\x01"
+        buf = [] ; assert binarypack._pack_H(65535, buf) == 2 ; assert "".join(buf) == b"\xFF\xFF"
 
     def test__pack_string(self):
-        buf = [] ; binarypack._pack_string("", buf) ; assert "".join(buf) == b"\x00\x00"
-        buf = [] ; binarypack._pack_string("test", buf) ; assert "".join(buf) == b"\x00\x04test"
-        buf = [] ; binarypack._pack_string(u"übel".encode("utf-8"), buf) ; assert "".join(buf) == b"\x00\x05\xC3\xBCbel"
+        buf = [] ; assert binarypack._pack_string("", buf) == 2 ; assert "".join(buf) == b"\x00\x00"
+        buf = [] ; assert binarypack._pack_string("test", buf) == 6 ; assert "".join(buf) == b"\x00\x04test"
+        buf = [] ; assert binarypack._pack_string(u"übel".encode("utf-8"), buf) == 7 ; assert "".join(buf) == b"\x00\x05\xC3\xBCbel"
 
     def test__pack_bstring(self):
-        buf = [] ; binarypack._pack_bstring("", buf) ; assert "".join(buf) == b"\x00\x00"
-        buf = [] ; binarypack._pack_bstring("test", buf) ; assert "".join(buf) == b"\x00\x04test"
-        buf = [] ; binarypack._pack_bstring(True, buf) ; assert "".join(buf) == b"\x00\x05_TRUE"
-        buf = [] ; binarypack._pack_bstring(False, buf) ; assert "".join(buf) == b"\x00\x06_FALSE"
+        buf = [] ; assert binarypack._pack_bstring("", buf) == 2 ; assert "".join(buf) == b"\x00\x00"
+        buf = [] ; assert binarypack._pack_bstring("test", buf) == 6 ; assert "".join(buf) == b"\x00\x04test"
+        buf = [] ; assert binarypack._pack_bstring(True, buf) == 7 ; assert "".join(buf) == b"\x00\x05_TRUE"
+        buf = [] ; assert binarypack._pack_bstring(False, buf) == 8 ; assert "".join(buf) == b"\x00\x06_FALSE"
 
     def test__pack_j(self):
-        buf = [] ; binarypack._pack_j(None, buf) ; assert "".join(buf) == b"\x00\x04null"
-        buf = [] ; binarypack._pack_j({'test': 1}, buf) ; assert "".join(buf) == b"\x00\x0B{\"test\": 1}"
+        buf = [] ; assert binarypack._pack_j(None, buf) == 6 ; assert "".join(buf) == b"\x00\x04null"
+        buf = [] ; assert binarypack._pack_j({'test': 1}, buf) == 13 ; assert "".join(buf) == b"\x00\x0B{\"test\": 1}"
 
     def test__pack_Bl(self):
-        buf = [] ; binarypack._pack_Bl([], buf) ; assert "".join(buf) == b"\x00"
-        buf = [] ; binarypack._pack_Bl([1, 2, 3], buf) ; assert "".join(buf) == b"\x03\x01\x02\x03"
+        buf = [] ; assert binarypack._pack_Bl([], buf) == 1 ; assert "".join(buf) == b"\x00"
+        buf = [] ; assert binarypack._pack_Bl([1, 2, 3], buf) == 4 ; assert "".join(buf) == b"\x03\x01\x02\x03"
 
     def test__pack_Hl(self):
-        buf = [] ; binarypack._pack_Hl([], buf) ; assert "".join(buf) == b"\x00"
-        buf = [] ; binarypack._pack_Hl([1, 2, 3], buf) ; assert "".join(buf) == b"\x03\x00\x01\x00\x02\x00\x03"
+        buf = [] ; assert binarypack._pack_Hl([], buf) == 1 ; assert "".join(buf) == b"\x00"
+        buf = [] ; assert binarypack._pack_Hl([1, 2, 3], buf) == 7 ; assert "".join(buf) == b"\x03\x00\x01\x00\x02\x00\x03"
 
     def test__pack_Il(self):
-        buf = [] ; binarypack._pack_Il([], buf) ; assert "".join(buf) == b"\x00"
-        buf = [] ; binarypack._pack_Il([1, 2, 3], buf) ; assert "".join(buf) == b"\x03\x00\x00\x00\x01\x00\x00\x00\x02\x00\x00\x00\x03"
+        buf = [] ; assert binarypack._pack_Il([], buf) == 1 ; assert "".join(buf) == b"\x00"
+        buf = [] ; assert binarypack._pack_Il([1, 2, 3], buf) == 13 ; assert "".join(buf) == b"\x03\x00\x00\x00\x01\x00\x00\x00\x02\x00\x00\x00\x03"
 
     def test__pack_pl(self):
-        buf = [] ; binarypack._pack_pl([], buf) ; assert "".join(buf) == b"\x00\x00"
-        buf = [] ; binarypack._pack_pl([packets.PacketLogin(), packets.PacketLogin()], buf) ; assert "".join(buf) == \
+        buf = [] ; assert binarypack._pack_pl([], buf) == 2 ; assert "".join(buf) == b"\x00\x00"
+        buf = [] ; assert binarypack._pack_pl([packets.PacketLogin(), packets.PacketLogin()], buf) == 44 ; assert "".join(buf) == \
             b'\x00\x02\n\x00\x12\x00\x07unknown\x00\x07' \
             b'unknown\n\x00\x12\x00\x07unknown\x00\x07unknown'
 
     def test__pack_money(self):
-        buf = [] ; binarypack._pack_money({}, buf) ; assert "".join(buf) == b"\x00\x00"
-        buf = [] ; binarypack._pack_money({1: (1, 2, 3)}, buf) ; assert "".join(buf) == \
+        buf = [] ; assert binarypack._pack_money({}, buf) == 2 ; assert "".join(buf) == b"\x00\x00"
+        buf = [] ; assert binarypack._pack_money({1: (1, 2, 3)}, buf) == 30 ; assert "".join(buf) == \
             b'\x00\x01\x00\x00\x00\x01\x00\x00' \
             b'\x00\x00\x00\x00\x00\x01\x00\x00' \
             b'\x00\x00\x00\x00\x00\x02\x00\x00' \
             b'\x00\x00\x00\x00\x00\x03'
 
     def test__pack_players(self):
-        buf = [] ; binarypack._pack_players([], buf) ; assert "".join(buf) == b"\x00\x00"
-        buf = [] ; binarypack._pack_players([('name', 10, 0)], buf) ; assert "".join(buf) == b"\x00\x01\x00\x04name\x00\x00\x00\n\x00"
+        buf = [] ; assert binarypack._pack_players([], buf) == 2 ; assert "".join(buf) == b"\x00\x00"
+        buf = [] ; assert binarypack._pack_players([('name', 10, 0)], buf) == 13 ; assert "".join(buf) == b"\x00\x01\x00\x04name\x00\x00\x00\n\x00"
 
     def test__pack_c(self):
-        buf = [] ; binarypack._pack_c([], buf) ; assert "".join(buf) == b"\x00\x00\x00\x00"
-        buf = [] ; binarypack._pack_c([10, 100], buf) ; assert "".join(buf) == b"\x00\x00\x03\xE8"
+        buf = [] ; assert binarypack._pack_c([], buf) == 4 ; assert "".join(buf) == b"\x00\x00\x00\x00"
+        buf = [] ; assert binarypack._pack_c([10, 100], buf) == 4 ; assert "".join(buf) == b"\x00\x00\x03\xE8"
 
     def test__unpack_I(self):
         assert binarypack._unpack_I(b"\x00\x00\x00\x00", 0) == (4, 0)

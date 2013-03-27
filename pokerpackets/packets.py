@@ -107,7 +107,7 @@ class Packet:
                 continue
 
             # break if type is not fixed length and no other evaluation is needed
-            if s_type not in ('bool', 'B', 'H', 'I', 'Q'):
+            if s_type not in ('B', 'H', 'I', 'Q'):
                 break
 
             # 
@@ -117,7 +117,7 @@ class Packet:
         else:
             if attr_names:
                 fast_struct = Struct(struct_format)
-                fast_struct_size = fast_struct.size
+                fast_struct_size = fast_struct.size - 3 # 3 is the size of the packet head
                 packet_type._binarypack_fast_pack = lambda p: fast_struct.pack(
                     index,
                     fast_struct_size,
