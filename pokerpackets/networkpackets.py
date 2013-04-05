@@ -2833,7 +2833,25 @@ class PacketPokerTourneyRebuy(PacketSerial):
         ('tourney_serial', 0, 'I'),
     )
 
-Packet.infoDeclare(globals(), PacketPokerTourneyRebuy, PacketPokerId, "POKER_TOURNEY_REBUY", 162)
+Packet.infoDeclare(globals(), PacketPokerTourneyRebuy, PacketPokerId, "POKER_TOURNEY_REBUY", 162) # 162 # 0xa2
+
+########################################
+
+class PacketPokerBetLimits(PacketPokerId):
+    
+    LIMIT = 0
+    NO_LIMIT = 1
+    POT_LIMIT = 2
+    
+    info = PacketPokerId.info + (
+        ('min', 0, 'I'),
+        ('max', 0, 'I'),
+        ('step', 0, 'I'),
+        ('cap', 0, 'B'),
+        ('limit', 0, 'B')
+    )
+
+Packet.infoDeclare(globals(), PacketPokerBetLimits, PacketPokerId, "POKER_BET_LIMITS", 163) # 163 # 0xa3
 
 ########################################
 
