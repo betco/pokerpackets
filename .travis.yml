@@ -7,6 +7,6 @@ install:
  - pip install http://github.com/pokermania/pokerdistutils/archive/master.zip
  - pip install http://github.com/pokermania/reflogging/archive/master.zip
  - pip install simplejson
+ - pip install .
 
-# command to run tests, e.g. python setup.py test
-script: PYTHON_PATH=$(readlink -f .) python setup.py test -p
+script: python setup.py test -p
