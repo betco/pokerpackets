@@ -16,7 +16,6 @@ class BinaryPackTestCase(unittest.TestCase):
     def test_pack_unpack(self):
         "iterates over all packet types, packs and unpacks them and see if the result package equals the original packet"
         for type_id, packet_type in packets.type_id2type.iteritems():
-            print packet_type
             packet = packet_type()
             packed = binarypack.pack(packet)
             assert binarypack.pack(packet) == packed
