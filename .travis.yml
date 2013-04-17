@@ -5,6 +5,8 @@ python:
 
 install:
  - pip install
+    nose
+    rednose
     simplejson
     http://github.com/pokermania/reflogging/archive/master.zip
 
