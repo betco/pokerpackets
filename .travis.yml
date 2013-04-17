@@ -4,9 +4,8 @@ python:
   - "2.6"
 
 install:
- - pip install http://github.com/pokermania/pokerdistutils/archive/master.zip
- - pip install http://github.com/pokermania/reflogging/archive/master.zip
- - pip install simplejson
- - pip install .
+ - pip install
+    simplejson
+    http://github.com/pokermania/reflogging/archive/master.zip
 
-script: python setup.py test -p
+script: nosetests --exe --rednose tests
