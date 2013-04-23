@@ -32,8 +32,8 @@ log = packets_log.get_child('packets')
 name2type = {}
 type2type_id = {}
 type_id2type = {}
-PacketFactory = {PACKET_NONE: Packet}
-PacketNames = {PACKET_NONE: "NONE"}
+PacketFactory = {}
+PacketNames = {}
 
 PACKET_NONE = 0
 
@@ -92,8 +92,10 @@ class Packet:
         if 'type2type_id' not in dictionary: dictionary['type2type_id'] = {}
         if 'type_id2type' not in dictionary: dictionary['type_id2type'] = {}
         if 'name2type' not in dictionary: dictionary['name2type'] = {}
-        if 'PacketFactory' not in dictionary: dictionary['PacketFactory'] = {PACKET_NONE: Packet}
-        if 'PacketNames' not in dictionary: dictionary['PacketNames'] = {PACKET_NONE: "NONE"}
+        if 'PacketFactory' not in dictionary: dictionary['PacketFactory'] = {}
+        if PACKET_NONE not in dictionary['PacketFactory']: dictionary['PacketFactory'][PACKET_NONE] = Packet
+        if 'PacketNames' not in dictionary: dictionary['PacketNames'] = {}
+        if PACKET_NONE not in dictionary['PacketNames']: dictionary['PacketNames'][PACKET_NONE] = "NONE"
 
         # setup _type
         packet_type.type = index
