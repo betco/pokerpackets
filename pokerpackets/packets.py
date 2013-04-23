@@ -32,8 +32,8 @@ log = packets_log.get_child('packets')
 name2type = {}
 type2type_id = {}
 type_id2type = {}
-PacketFactory = {}
-PacketNames = {}
+PacketFactory = {PACKET_NONE: Packet}
+PacketNames = {PACKET_NONE: "NONE"}
 
 PACKET_NONE = 0
 
