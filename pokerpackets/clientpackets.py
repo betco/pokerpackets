@@ -24,44 +24,44 @@
 # PACKET_POKER_CHIPS_BET2PLAYER
 # PACKET_POKER_CHIPS_POT_MERGE
 #
-from pokerpackets.packets import Packet, type2type_id, type_id2type
-from pokerpackets.networkpackets import *
+from pokerpackets.packets import Packet
+from pokerpackets.networkpackets import PacketPokerCards, PacketPokerId, PacketPokerPosition, PacketPokerSit, PacketPokerSitOut
 
 class PacketPokerBestCards(PacketPokerCards):
     """\
-Semantics: ordered list  of five "bestcards" hand for
-player "serial" in game "game_id" that won the "side"
-side of the pot. The "board", if not empty, is the list
-of community cards at showdown. Also provides the
-"cards" of the player.
+    Semantics: ordered list  of five "bestcards" hand for
+    player "serial" in game "game_id" that won the "side"
+    side of the pot. The "board", if not empty, is the list
+    of community cards at showdown. Also provides the
+    "cards" of the player.
 
-Direction: client <=> client
+    Direction: client <=> client
 
-cards: list of integers describing the player cards:
+    cards: list of integers describing the player cards:
 
-       2h/00  2d/13  2c/26  2s/39
-       3h/01  3d/14  3c/27  3s/40
-       4h/02  4d/15  4c/28  4s/41
-       5h/03  5d/16  5c/29  5s/42
-       6h/04  6d/17  6c/30  6s/43
-       7h/05  7d/18  7c/31  7s/44
-       8h/06  8d/19  8c/32  8s/45
-       9h/07  9d/20  9c/33  9s/46
-       Th/08  Td/21  Tc/34  Ts/47
-       Jh/09  Jd/22  Jc/35  Js/48
-       Qh/10  Qd/23  Qc/36  Qs/49
-       Kh/11  Kd/24  Kc/37  Ks/50
-       Ah/12  Ad/25  Ac/38  As/51
-       
-bestcards: list of integers describing the winning combination cards:
-board: list of integers describing the community cards:
-hand: readable string of the name best hand
-besthand: 0 if it's not the best hand and 1 if it's the best hand
-         best hand is the hand that win the most money
-       
-serial: integer uniquely identifying a player.
-game_id: integer uniquely identifying a game.
-"""
+           2h/00  2d/13  2c/26  2s/39
+           3h/01  3d/14  3c/27  3s/40
+           4h/02  4d/15  4c/28  4s/41
+           5h/03  5d/16  5c/29  5s/42
+           6h/04  6d/17  6c/30  6s/43
+           7h/05  7d/18  7c/31  7s/44
+           8h/06  8d/19  8c/32  8s/45
+           9h/07  9d/20  9c/33  9s/46
+           Th/08  Td/21  Tc/34  Ts/47
+           Jh/09  Jd/22  Jc/35  Js/48
+           Qh/10  Qd/23  Qc/36  Qs/49
+           Kh/11  Kd/24  Kc/37  Ks/50
+           Ah/12  Ad/25  Ac/38  As/51
+           
+    bestcards: list of integers describing the winning combination cards:
+    board: list of integers describing the community cards:
+    hand: readable string of the name best hand
+    besthand: 0 if it's not the best hand and 1 if it's the best hand
+             best hand is the hand that win the most money
+           
+    serial: integer uniquely identifying a player.
+    game_id: integer uniquely identifying a game.
+    """
 
     info = PacketPokerCards.info + ( ("side", "", 's'),
                                      ("hand", "", 's'),
@@ -133,7 +133,7 @@ Packet.infoDeclare(globals(), PacketPokerBetLimit, PacketPokerId, 'POKER_BET_LIM
 ########################################
 
 class PacketPokerSitRequest(PacketPokerSit):
-    pass #pragma: no cover
+    pass
 
 Packet.infoDeclare(globals(), PacketPokerSitRequest, PacketPokerId, "POKER_SIT_REQUEST", 174) # 0xae # %SEQ%
 
@@ -150,7 +150,7 @@ Context: inferred at showdown.
 serial: integer uniquely identifying a player.
 game_id: integer uniquely identifying a game.
 """
-    pass #pragma: no cover
+    pass
 
 Packet.infoDeclare(globals(), PacketPokerPlayerNoCards, PacketPokerId, "POKER_PLAYER_NO_CARDS", 175) # 0xaf # %SEQ%
 
@@ -279,7 +279,7 @@ because a :class:`PACKET_POKER_WIN <pokerpackets.networkpackets.PacketPokerWin>`
 
 game_id: integer uniquely identifying a game.
 """
-    pass #pragma: no cover
+    pass
 
 Packet.infoDeclare(globals(), PacketPokerChipsPotReset, PacketPokerId, "POKER_CHIPS_POT_RESET", 180) # 0xb4 # %SEQ%
 
@@ -287,7 +287,7 @@ Packet.infoDeclare(globals(), PacketPokerChipsPotReset, PacketPokerId, "POKER_CH
 
 class PacketPokerChipsBet2player(PacketPokerChipsPlayer2Bet):
     """chips move from bet to player"""
-    pass #pragma: no cover
+    pass
 
 Packet.infoDeclare(globals(), PacketPokerChipsBet2player, PacketPokerChipsPlayer2Bet, "POKER_CHIPS_BET2PLAYER", 181) # 0xb5 # %SEQ%
 
@@ -312,7 +312,7 @@ It is not inferred at the end of the last betting round.
 
 game_id: integer uniquely identifying a game.
 """
-    pass #pragma: no cover
+    pass
 
 Packet.infoDeclare(globals(), PacketPokerEndRound, PacketPokerId, "POKER_END_ROUND", 182) # 0xb6 # %SEQ%
 
@@ -358,7 +358,7 @@ Semantics: the player authenticated for this connection
 is in position. Otherwise identical to :class:`PACKET_POKER_POSITION <pokerpackets.networkpackets.PacketPokerPosition>`.
 
 """
-    pass #pragma: no cover
+    pass
 
 Packet.infoDeclare(globals(), PacketPokerSelfInPosition, PacketPokerPosition, "POKER_SELF_IN_POSITION", 187) # 0xbb # %SEQ%
 
@@ -370,7 +370,7 @@ Semantics: the player authenticated for this connection
 is in position. Otherwise identical to :class:`PACKET_POKER_POSITION <pokerpackets.networkpackets.PacketPokerPosition>`.
 
 """
-    pass #pragma: no cover
+    pass
 
 Packet.infoDeclare(globals(), PacketPokerSelfLostPosition, PacketPokerPosition, "POKER_SELF_LOST_POSITION", 188) # 0xbc # %SEQ%
 
@@ -393,7 +393,7 @@ is inferred for each raise.
 
 game_id: integer uniquely identifying a game.
 """
-    pass #pragma: no cover
+    pass
 
 Packet.infoDeclare(globals(), PacketPokerHighestBetIncrease, PacketPokerId, "POKER_HIGHEST_BET_INCREASE", 189) # 0xbd # %SEQ%
 
@@ -411,7 +411,7 @@ PlayerWin is generated.
 
 serial: integer uniquely identifying a player.
 """
-    pass #pragma: no cover
+    pass
 
 Packet.infoDeclare(globals(), PacketPokerPlayerWin, PacketPokerId, "POKER_PLAYER_WIN", 190) # 0xbe # %SEQ%
 
@@ -444,7 +444,7 @@ BEGIN    river
 
 game_id: integer uniquely identifying a game.
 """
-    pass #pragma: no cover
+    pass
 
 Packet.infoDeclare(globals(), PacketPokerBeginRound, PacketPokerId, "POKER_BEGIN_ROUND", 197) # 0xc5 # %SEQ%
 
@@ -484,14 +484,14 @@ Packet.infoDeclare(globals(), PacketPokerCurrentGames, Packet, "POKER_CURRENT_GA
 ######################################## Display packet
 
 class PacketPokerEndRoundLast(PacketPokerId):
-    pass #pragma: no cover
+    pass
 
 Packet.infoDeclare(globals(), PacketPokerEndRoundLast, PacketPokerId, "POKER_END_ROUND_LAST", 199) # 0xc7 # %SEQ%
 
 ########################################
 
 class PacketPokerSitOutNextTurn(PacketPokerSitOut):
-    pass #pragma: no cover
+    pass
 
 Packet.infoDeclare(globals(), PacketPokerSitOutNextTurn, PacketPokerId, "POKER_SIT_OUT_NEXT_TURN", 201) # 0xc9 # %SEQ%
 

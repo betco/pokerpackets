@@ -267,7 +267,7 @@ def _unpack_pl(data, offset):
     length, = _s_H.unpack_from(data, offset)
     packets = []
     j = offset + _s_H.size
-    for i in xrange(length):
+    for _ in xrange(length):
         j, packet = unpack(data, j)
         packets.append(packet)
     return (j, packets)
@@ -284,7 +284,7 @@ def _unpack_players(data, offset):
     length, = _s_H.unpack_from(data, offset)
     players = []
     j = offset + _s_H.size
-    for i in xrange(length):
+    for _ in xrange(length):
         j, name = _unpack_string(data, j)
         j, chips = _unpack_I(data, j)
         j, flags = _unpack_B(data, j)
