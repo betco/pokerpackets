@@ -2584,12 +2584,16 @@ resume_time: time that the tourney will resume, in seconds since 1970-01-01 00:0
         ('resume_time', 0, 'I'),
         )
 
-Packet.infoDeclare(globals(), PacketPokerTableTourneyBreakBegin, Packet, "POKER_TABLE_TOURNEY_BREAK_BEGIN", 154) # 154 # 0x9a # %SEQ%
+    def __str__(self):
+        string = "%s(%d)" % (self.__class__.__name__, self.__class__.type)
+        for attr, _d, _t in self.__class__.info:
+            if attr == 'resume_time':
+                string += " %s: %s" % (attr, strftime("%Y/%m/%d-%H:%M", gmtime(getattr(self, attr))))
+            else:
+                string += " %s: %s" % (attr, repr(getattr(self, attr)))
+        return string
 
-# infoDeclare would clobber our custom __str__ if we set it in the lass, so replace it here.
-def PacketPokerTableTourneyBreakBegin__str__(self):
-        return Packet.__str__(self) + "game_id = %d, resume_time = %s" % ( self.game_id,strftime("%Y/%m/%d %H:%M", gmtime(self.resume_time)))
-PacketPokerTableTourneyBreakBegin.__str__ = PacketPokerTableTourneyBreakBegin__str__
+Packet.infoDeclare(globals(), PacketPokerTableTourneyBreakBegin, Packet, "POKER_TABLE_TOURNEY_BREAK_BEGIN", 154) # 154 # 0x9a # %SEQ%
 
 ########################################
 class PacketPokerTableTourneyBreakDone(Packet):
