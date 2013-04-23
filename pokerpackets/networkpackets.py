@@ -3038,4 +3038,4 @@ _TYPES = range(50,169)
 #
 # only export things starting with Packet or PACKET_
 import re
-__all__ = [n for n in locals().keys() if re.match('Packet|PACKET_',n)]
+__all__ = [n for n in locals().keys() if re.match('Packet|PACKET_', n)]

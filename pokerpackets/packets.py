@@ -24,10 +24,14 @@
 #
 
 import re
-from struct import pack, unpack, calcsize, Struct
+from struct import Struct
 
 from pokerpackets import log as packets_log
 log = packets_log.get_child('packets')
+
+name2type = {}
+type2type_id = {}
+type_id2type = {}
 
 PACKET_NONE = 0
 
@@ -42,14 +46,14 @@ class JSON:
     """
     JSON implementation used for packet en/decoding
     """
-    encoder = simplejson.JSONEncoder(ensure_ascii=False,separators=(',', ':'))
+    encoder = simplejson.JSONEncoder(ensure_ascii=False, separators=(',', ':'))
     decoder = simplejson.JSONDecoder()
 
-    def encode(self,obj):
+    def encode(self, obj):
         """encode an object, returning a utf8 encoded string (not a unicode string!)"""
         return self.encoder.encode(obj).encode('utf-8')
 
-    def decode(self,string):
+    def decode(self, string):
         return self.decoder.decode(string)
         
 class Packet:
@@ -354,4 +358,4 @@ _TYPES = range(0,39)
 
 #
 # only export things starting with Packet or PACKET_
-__all__ = [n for n in locals().keys() if re.match('Packet|PACKET_',n)] + ['type2type_id', 'type_id2type', 'name2type']
+__all__ = [n for n in locals().keys() if re.match('Packet|PACKET_', n)] + ['type2type_id', 'type_id2type', 'name2type']

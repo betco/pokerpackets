@@ -2,12 +2,10 @@
 from pokerpackets import log as packet_log
 log = packet_log.get_child('binarypack')
 
-from pokerpackets import packets
 from pokerpackets.packets import type2type_id, type_id2type
 
 import simplejson
 from struct import Struct
-from string import join
 
 def pack(packet):
     """
@@ -24,7 +22,7 @@ def pack(packet):
 
     buf = []
     _pack(packet, buf)
-    return join(buf, b'')
+    return b''.join(buf)
 
 def _pack(packet, buf):
     packet_type = packet.__class__
@@ -50,7 +48,7 @@ def unpack(data, offset=0):
     """
 
     # parse packet head
-    type_id, length = _s_packet_head.unpack_from(data, offset)
+    type_id, _length = _s_packet_head.unpack_from(data, offset)
 
     # get packet class
     packet_type = type_id2type[type_id]

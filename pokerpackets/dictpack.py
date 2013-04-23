@@ -1,5 +1,4 @@
 
-import re
 from traceback import format_exc
 
 from pokerpackets.packets import type2type_id, name2type, type_id2type, PacketError
@@ -13,7 +12,7 @@ def dict2packet(dict_packet):
         return PacketError(message = "Invalid packet type_id/name: " + repr(dict_packet.get('type'))), numeric_type
 
     # recurse for packetlists
-    for attr, default, s_type in packet_type.info:
+    for attr, _default, s_type in packet_type.info:
         if s_type == 'pl' and attr in dict_packet:
             dict_packet[attr] = [dict2packet(d)[0] for d in dict_packet[attr]]
 
@@ -37,7 +36,7 @@ def packet2dict(packet, numeric_type=True):
         'type': type_id if numeric_type else packet_type.__name__
     }
 
-    for attr, default, s_type in packet_type.info:
+    for attr, _default, s_type in packet_type.info:
         if s_type == 'no net':
             continue
         elif s_type == 'pl':

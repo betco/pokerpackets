@@ -24,10 +24,8 @@
 # PACKET_POKER_CHIPS_BET2PLAYER
 # PACKET_POKER_CHIPS_POT_MERGE
 #
-from struct import pack, unpack
-
-from packets import Packet, type2type_id, type_id2type
-from networkpackets import *
+from pokerpackets.packets import Packet, type2type_id, type_id2type
+from pokerpackets.networkpackets import *
 
 class PacketPokerBestCards(PacketPokerCards):
     """\
