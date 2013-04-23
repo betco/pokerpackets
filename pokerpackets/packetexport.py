@@ -5,7 +5,7 @@ def packetToExport(ptype):
     pname = PacketNames[ptype]
     return {
         'name': pname,
-        'fields': packet.info[2:]
+        'fields': packet.info
     }
 
 def exportPackets():
