@@ -1132,9 +1132,6 @@ game_id: integer uniquely identifying a game.
 Packet.infoDeclare(globals(), PacketPokerChat , Packet, "POKER_CHAT", 86) # 86 # 0x56
 ########################################
 
-PACKET_POKER_PLAYER_INFO = 87 # 0x57 # %SEQ%
-PacketNames[PACKET_POKER_PLAYER_INFO] = "POKER_PLAYER_INFO"
-
 class PacketPokerPlayerInfo(PacketPokerId):
     """\
 Semantics: the player "serial" descriptive informations. When
