@@ -1,9 +1,9 @@
-from pokerpackets.packets import PacketFactory
+from pokerpackets.packets import type_id2tpye, PacketNames
 import pokerpackets.networkpackets
 import pokerpackets.clientpackets
 
 def packetToExport(ptype):
-    packet = PacketFactory[ptype]
+    packet = type_id2tpye[ptype]
     pname = PacketNames[ptype]
     return {
         'name': pname,
@@ -11,12 +11,11 @@ def packetToExport(ptype):
     }
 
 def exportPackets():
-    exp = [(ptype, packetToExport(ptype)) for ptype in PacketFactory.iterkeys()]
-    return exp
+    return [(type_id, packetToExport(type_id)) for type_id in type_id2tpye.iterkeys()]
 
 
 if __name__ == '__main__':
     import json
-    encoder = json.JSONEncoder(separators=(',',':'))
+    encoder = json.JSONEncoder(separators=(',', ':'))
     exp = exportPackets()
     print '{%s}' % ',\n'.join('"%d": %s' % (p[0], encoder.encode(p[1])) for p in exp)
