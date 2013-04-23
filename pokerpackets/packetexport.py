@@ -1,4 +1,4 @@
-from pokerpackets.packets import type_id2tpye, PacketNames
+from pokerpackets.packets import type_id2type, PacketNames
 import pokerpackets.networkpackets
 import pokerpackets.clientpackets
 
