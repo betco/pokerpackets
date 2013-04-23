@@ -1,4 +1,6 @@
-from clientpackets import *
+from pokerpackets.packets import PacketFactory
+import pokerpackets.networkpackets
+import pokerpackets.clientpackets
 
 def packetToExport(ptype):
     packet = PacketFactory[ptype]
