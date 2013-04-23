@@ -178,8 +178,6 @@
 #     POKER_TABLE_TOURNEY_BREAK_BEGIN
 #     POKER_TABLE_TOURNEY_BREAK_END
 
-import sys
-from time import strftime, gmtime
 
 """\
 Packets exchanged between the poker server and a poker client.
@@ -210,11 +208,10 @@ The terms table/game are used interchangeably depending on the context.
 
 The documentation is kept terse and emphasizes the non-intuitive
 behaviour associated to each packet.
-""" #pragma: no cover
+"""
 
-from struct import pack, unpack, calcsize
-from types import IntType, LongType
-from packets import *
+from time import strftime, gmtime
+from pokerpackets.packets import *
 
 ########################################
 
@@ -877,7 +874,7 @@ reason: string representing the reason that this packet is being sent to
         ('player_seated',-1,'no net')
         )
     
-Packet.infoDeclare(globals(),PacketPokerTable, Packet, "POKER_TABLE", 73) # 73 # 0x49
+Packet.infoDeclare(globals(), PacketPokerTable, Packet, "POKER_TABLE", 73) # 73 # 0x49
 ########################################
 
 class PacketPokerTableList(PacketList):
@@ -895,7 +892,7 @@ packets: a list of :class:`PACKET_POKER_TABLE <pokerpackets.networkpackets.Packe
         ('tables', 0, 'I'),
         )
 
-Packet.infoDeclare(globals(),PacketPokerTableList, Packet, "POKER_TABLE_LIST", 74) # 74 # 0x4a
+Packet.infoDeclare(globals(), PacketPokerTableList, Packet, "POKER_TABLE_LIST", 74) # 74 # 0x4a
 ########################################
 
 class PacketPokerSit(PacketPokerId):
@@ -917,13 +914,13 @@ serial: integer uniquely identifying a player.
 game_id: integer uniquely identifying a game.
 """
 
-Packet.infoDeclare(globals(),PacketPokerSit, Packet, "POKER_SIT", 75) # 75 # 0x4b
+Packet.infoDeclare(globals(), PacketPokerSit, Packet, "POKER_SIT", 75) # 75 # 0x4b
 ########################################
 
 class PacketPokerTableDestroy(PacketPokerId):
     """destroy"""
 
-Packet.infoDeclare(globals(),PacketPokerTableDestroy, Packet, "POKER_TABLE_DESTROY", 76) # 76 # 0x4c
+Packet.infoDeclare(globals(), PacketPokerTableDestroy, Packet, "POKER_TABLE_DESTROY", 76) # 76 # 0x4c
 ########################################
 
 class PacketPokerTimeoutWarning(PacketPokerId):
@@ -942,7 +939,7 @@ game_id: integer uniquely identifying a game.
         ('when', -1, 'no net'),
         )
 
-Packet.infoDeclare(globals(),PacketPokerTimeoutWarning, Packet, "POKER_TIMEOUT_WARNING", 77) # 77 # 0x4d
+Packet.infoDeclare(globals(), PacketPokerTimeoutWarning, Packet, "POKER_TIMEOUT_WARNING", 77) # 77 # 0x4d
 ########################################
 
 class PacketPokerTimeoutNotice(PacketPokerId):
@@ -956,7 +953,7 @@ serial: integer uniquely identifying a player.
 game_id: integer uniquely identifying a game.
 """
 
-Packet.infoDeclare(globals(),PacketPokerTimeoutNotice, Packet, "POKER_TIMEOUT_NOTICE", 78) # 78 # 0x4e
+Packet.infoDeclare(globals(), PacketPokerTimeoutNotice, Packet, "POKER_TIMEOUT_NOTICE", 78) # 78 # 0x4e
 ########################################
 
 class PacketPokerSeat(PacketPokerId):
@@ -983,7 +980,7 @@ game_id: integer uniquely identifying a game.
 
     info = PacketPokerId.info + ( ('seat', -1, 'b'), )
 
-Packet.infoDeclare(globals(),PacketPokerSeat, Packet, "POKER_SEAT", 79) # 79 # 0x4f
+Packet.infoDeclare(globals(), PacketPokerSeat, Packet, "POKER_SEAT", 79) # 79 # 0x4f
 ########################################
 
 class PacketPokerTableMove(PacketPokerSeat):
@@ -1006,7 +1003,7 @@ to_game_id: integer uniquely identifying a game.
 
     info = PacketPokerSeat.info + ( ('to_game_id', 0, 'I'), )
 
-Packet.infoDeclare(globals(),PacketPokerTableMove, Packet, "POKER_TABLE_MOVE", 80) # 80 # 0x50
+Packet.infoDeclare(globals(), PacketPokerTableMove, Packet, "POKER_TABLE_MOVE", 80) # 80 # 0x50
 ########################################
 
 class PacketPokerPlayerLeave(PacketPokerSeat):
@@ -1028,7 +1025,7 @@ seat: the seat left in the range [0,9]
 
     TOURNEY = 1
 
-Packet.infoDeclare(globals(),PacketPokerPlayerLeave, Packet, "POKER_PLAYER_LEAVE", 81) # 81 # 0x51
+Packet.infoDeclare(globals(), PacketPokerPlayerLeave, Packet, "POKER_PLAYER_LEAVE", 81) # 81 # 0x51
 ########################################
 
 class PacketPokerSitOut(PacketPokerId):
@@ -1052,7 +1049,7 @@ serial: integer uniquely identifying a player.
 game_id: integer uniquely identifying a game.
 """
 
-Packet.infoDeclare(globals(),PacketPokerSitOut, Packet, "POKER_SIT_OUT", 82) # 82 # 0x52
+Packet.infoDeclare(globals(), PacketPokerSitOut, Packet, "POKER_SIT_OUT", 82) # 82 # 0x52
 ########################################
 
 class PacketPokerTableQuit(PacketPokerId):
@@ -1093,7 +1090,7 @@ game_id: integer uniquely identifying a game.
 
     info = PacketPokerId.info + ( ('amount', 0, 'I'), )
 
-Packet.infoDeclare(globals(),PacketPokerBuyIn , Packet, "POKER_BUY_IN", 84) # 84 # 0x54
+Packet.infoDeclare(globals(), PacketPokerBuyIn , Packet, "POKER_BUY_IN", 84) # 84 # 0x54
 ########################################
 
 class PacketPokerRebuy(PacketPokerBuyIn):
@@ -1116,7 +1113,7 @@ serial: integer uniquely identifying a player.
 game_id: integer uniquely identifying a game.
 """
 
-Packet.infoDeclare(globals(),PacketPokerRebuy , Packet, "POKER_REBUY", 85) # 85 # 0x55
+Packet.infoDeclare(globals(), PacketPokerRebuy , Packet, "POKER_REBUY", 85) # 85 # 0x55
 ########################################
 
 class PacketPokerChat(PacketPokerId):
@@ -1132,7 +1129,7 @@ game_id: integer uniquely identifying a game.
 
     info = PacketPokerId.info + ( ('message', '', 's'), )
    
-Packet.infoDeclare(globals(),PacketPokerChat , Packet, "POKER_CHAT", 86) # 86 # 0x56
+Packet.infoDeclare(globals(), PacketPokerChat , Packet, "POKER_CHAT", 86) # 86 # 0x56
 ########################################
 
 PACKET_POKER_PLAYER_INFO = 87 # 0x57 # %SEQ%
@@ -1169,7 +1166,7 @@ serial: integer uniquely identifying a player.
         #  wanted to note I notced. -- bkuhn
         )
    
-Packet.infoDeclare(globals(),PacketPokerPlayerInfo , Packet, "POKER_PLAYER_INFO", 87) # 87 # 0x57
+Packet.infoDeclare(globals(), PacketPokerPlayerInfo , Packet, "POKER_PLAYER_INFO", 87) # 87 # 0x57
 ########################################
 
 class PacketPokerPlayerArrive(PacketPokerPlayerInfo):
