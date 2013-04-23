@@ -3,7 +3,7 @@ import pokerpackets.networkpackets
 import pokerpackets.clientpackets
 
 def packetToExport(ptype):
-    packet = type_id2tpye[ptype]
+    packet = type_id2type[ptype]
     pname = PacketNames[ptype]
     return {
         'name': pname,
@@ -11,7 +11,7 @@ def packetToExport(ptype):
     }
 
 def exportPackets():
-    return [(type_id, packetToExport(type_id)) for type_id in type_id2tpye.iterkeys()]
+    return [(type_id, packetToExport(type_id)) for type_id in type_id2type.iterkeys()]
 
 
 if __name__ == '__main__':
