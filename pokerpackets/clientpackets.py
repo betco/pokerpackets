@@ -25,7 +25,7 @@
 # PACKET_POKER_CHIPS_POT_MERGE
 #
 from pokerpackets.packets import Packet
-from pokerpackets.networkpackets import *
+from pokerpackets.networkpackets import PacketPokerCards, PacketPokerId, PacketPokerPosition, PacketPokerSit, PacketPokerSitOut
 
 class PacketPokerBestCards(PacketPokerCards):
     """\
