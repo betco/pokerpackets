@@ -2,6 +2,8 @@
 from traceback import format_exc
 
 from pokerpackets.packets import type2type_id, name2type, type_id2type, PacketError
+import pokerpackets.networkpackets
+import pokerpackets.clientpackets
 
 def dict2packet(dict_packet):
     numeric_type = type(dict_packet['type']) == int
@@ -9,6 +11,7 @@ def dict2packet(dict_packet):
         packet_type = type_id2type[dict_packet['type']] if type(dict_packet['type']) == int else name2type[dict_packet['type']]
         del dict_packet['type']
     except KeyError:
+        print name2type
         return PacketError(message = "Invalid packet type_id/name: " + repr(dict_packet.get('type'))), numeric_type
 
     # recurse for packetlists

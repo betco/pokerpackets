@@ -211,7 +211,7 @@ behaviour associated to each packet.
 """
 
 from time import strftime, gmtime
-from pokerpackets.packets import Packet, PacketSerial, PacketString, PacketList, PacketInt
+from pokerpackets.packets import Packet, PacketSerial, PacketString, PacketList, PacketInt, type2type_id, type_id2type, name2type, PacketNames, PacketFactory
 
 ########################################
 
