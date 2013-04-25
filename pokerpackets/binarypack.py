@@ -3,6 +3,8 @@ from pokerpackets import log as packet_log
 log = packet_log.get_child('binarypack')
 
 from pokerpackets.packets import type2type_id, type_id2type
+import pokerpackets.networkpackets
+import pokerpackets.clientpackets
 
 import simplejson
 from struct import Struct
