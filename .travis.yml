@@ -4,10 +4,11 @@ python:
   - "2.6"
 
 install:
+ - pip install -U pip
  - pip install
     nose
     rednose
     simplejson
-    http://github.com/pokermania/reflogging/archive/master.zip
+    git+git://github.com/pokermania/reflogging.git
 
 script: nosetests --exe --rednose tests
