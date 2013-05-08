@@ -3033,7 +3033,48 @@ class PacketPokerLongPollReturn(Packet):
 
 Packet.infoDeclare(globals(), PacketPokerLongPollReturn, Packet, "POKER_LONG_POLL_RETURN", 168) # 168 # 0xa8 # %SEQ%
 
-_TYPES = range(50,169)
+class PacketSetOption(PacketPokerId):
+    """
+    serial:     the user_serial that wants to set an option.
+    game_id:    the game that should be affetcted by this option.
+    name:       the option name.
+    value:      the option value as a string.
+
+    If the name is not known, or the value doesn't match to the name an PACKET_ERROR is send.
+    If everything is Ok, a PACKET_ACK is sent.
+    """
+    ERROR_UNKNOWN_NAME = 1
+    ERROR_WRONG_VALUE = 2
+
+    AUTO_BLIND_ANTE = 1
+    AUTO_FOLD = 2
+    AUTO_MUCK = 3
+    AUTO_REBUY = 4
+    AUTO_REFILL = 5
+    AUTO_PLAY = 6
+    # SET_ROLE = 7
+
+    OFF = 0
+    ON = 1
+
+    AUTO_MUCK_WIN = 1
+    AUTO_MUCK_LOSE = 2
+    AUTO_MUCK_ALWAYS = 3
+
+    AUTO_REFILL_MIN = AUTO_REBUY_MIN = 1
+    AUTO_REFILL_BEST = AUTO_REBUY_BEST = 2
+    AUTO_REFILL_MAX = AUTO_REBUY_MAX = 3
+
+    # ROLE_PLAY = 1
+    # ROLE_EDIT = 2
+
+    info = PacketPokerId.info + (
+        ('option_id', 0, 'B'),
+        ('value', 0, 'B'),
+    )
+Packet.infoDeclare(globals(), PacketSetOption, Packet, "SET_OPTION", 169) # 169 # 0xa9 # %SEQ%
+
+_TYPES = range(50,170)
 
 #
 # only export things starting with Packet or PACKET_
