@@ -2240,25 +2240,6 @@ money: the money won
 Packet.infoDeclare(globals(), PacketPokerTourneyRank, Packet, "POKER_TOURNEY_RANK", 137) # 137 # 0x89
 ########################################
 
-class PacketPokerPlayerImage(PacketSerial):
-    """
-    """
-
-    info = PacketSerial.info + (
-        ('image', '', 's'),
-        ('image_type', 'image/png', 's'),
-        )
-
-Packet.infoDeclare(globals(), PacketPokerPlayerImage, Packet, "POKER_PLAYER_IMAGE", 138) # 138 # 0x8a
-########################################
-
-class PacketPokerGetPlayerImage(PacketSerial):
-    """
-    """
-    
-Packet.infoDeclare(globals(), PacketPokerGetPlayerImage, Packet, "POKER_GET_PLAYER_IMAGE", 139) # 139 # 0x8b
-########################################
-
 class PacketPokerHandReplay(PacketPokerId):
     """
     """
