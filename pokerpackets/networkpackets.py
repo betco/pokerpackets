@@ -2802,7 +2802,6 @@ class PacketPokerTourneyRebuy(PacketSerial):
     tourney_serial: serial of the tourney
     """
 
-    OK = 0
     NOT_ENOUGH_MONEY = 1
     REBUY_TIMEOUT_EXEEDED = 2
     REBUY_LIMIT_EXEEDED = 4
