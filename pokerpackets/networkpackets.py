@@ -682,63 +682,88 @@ class PacketPokerTableJoin(PacketPokerId):
                 of the game "game_id".
 
                 There are three possible outcomes for the client in response to a
-                PacketPokerTableJoin()::
+                PacketPokerTableJoin():
 
-                  (0) In the case that the join is completely successful, or if the player
-                      had already joined the table, the following packets are sent:
+                    0.
+                        In the case that the join is completely successful, or if the player
+                        had already joined the table, the following packets are sent:
 
                           :class:`PACKET_POKER_TABLE <pokerpackets.networkpackets.PacketPokerTable>`
+
                           :class:`PACKET_POKER_BATCH_MODE <pokerpackets.networkpackets.PacketPokerBatchMode>`
+
                           for each player in the game:
+
                                :class:`PACKET_POKER_PLAYER_ARRIVE <pokerpackets.networkpackets.PacketPokerPlayerArrive>`
+
                           if the player is playing:
+
                                 :class:`PACKET_POKER_PLAYER_CHIPS <pokerpackets.networkpackets.PacketPokerPlayerChips>`
+
                           if the player is sit:
+
                                 :class:`PACKET_POKER_SIT <pokerpackets.networkpackets.PacketPokerSit>`
+
                           :class:`PACKET_POKER_SEATS <pokerpackets.networkpackets.PacketPokerSeats>`
+
                           if the game is running:
+
                                 the exact packet sequence that lead to the current state
                                 of the game. Varies according to the game.
+
                           :class:`PACKET_POKER_STREAM_MODE <pokerpackets.networkpackets.PacketPokerStreamMode>`
 
-                      Note clearly that if the player had already previously joined the
-                      table, the packets above will be sent as if the player just joined.
-                      However, in that case, the packet will have no side effect.
+                    Note clearly that if the player had already previously joined the
+                    table, the packets above will be sent as if the player just joined.
+                    However, in that case, the packet will have no side effect.
 
 
-                   (1) If the the player was unable to join the table specifically that
-                       the server has reached the maximum number of joined players, two
-                       packets will be sent to the client, the second of which is
-                       deprecated:
+                    1.
+                        If the the player was unable to join the table specifically that
+                        the server has reached the maximum number of joined players, two
+                        packets will be sent to the client, the second of which is
+                        deprecated:
 
-                        (a) the following packet (recommended way of testing for failure):
-                            PacketPokerError(code      = PacketPokerTableJoin.FULL,
-                                            message   = "This server has too many seated players and observers.",
-                                           other_type = :class:`PACKET_POKER_TABLE_JOIN <pokerpackets.networkpackets.PacketPokerTableJoin>`,
-                                           serial     = <player's serial id>,
-                                           game_id    = <id of the table>)
+                        (a)
+                            the following packet (recommended way of testing for failure)::
 
-                        (b) a packet, :class:`PACKET_POKER_TABLE <pokerpackets.networkpackets.PacketPokerTable>`, with serial 0 will be sent.  It
-                            will contain no meaningful information.  (THIS BEHAVIOR IS
+                                PacketPokerError(
+                                    code = PacketPokerTableJoin.FULL,               # 1
+                                    message = "This server has too many seated players and observers.",
+                                    other_type = PACKET_POKER_TABLE_JOIN,           # 71
+                                    serial = <player's serial id>,
+                                    game_id = <id of the table>
+                                )
+
+                        (b)
+                            a packet, :class:`PACKET_POKER_TABLE <pokerpackets.networkpackets.PacketPokerTable>`, with serial 0 will be sent.
+
+                            It will contain no meaningful information.  (THIS BEHAVIOR IS
                             DEPRECATED, and is left only for older clients.
                             New clients should not rely on this behavior.)
 
-                  (2) If the player cannot join the table for any reason (other than the
-                      table is FULL (as per (1) above), two packets will be sent to the
-                      client, one of which is deprecated:
+                    2.
+                        If the player cannot join the table for any reason (other than the
+                        table is FULL (as per (1) above), two packets will be sent to the
+                        client, one of which is deprecated:
 
-                       (a) the following packet (recommended way of testing for failure):
-                           PacketPokerError(code      = PacketPokerTableJoin.GENERAL_FAILURE,
-                                            message   = <some string of non-zero length, for use
-                                                        in displaying to the user>,
-                                           other_type = :class:`PACKET_POKER_TABLE_JOIN <pokerpackets.networkpackets.PacketPokerTableJoin>`,
-                                           serial     = <player's serial id>,
-                                           game_id    = 0)
+                        (a)
+                            the following packet (recommended way of testing for failure)::
 
-                       (b) a packet, :class:`PACKET_POKER_TABLE <pokerpackets.networkpackets.PacketPokerTable>`, with serial 0 will be sent.  It
-                           will contain no meaningful information.  (THIS BEHAVIOR IS
-                           DEPRECATED, and is left only for older clients.
-                           New clients should not rely on this behavior.)
+                                PacketPokerError(
+                                    code = PacketPokerTableJoin.GENERAL_FAILURE,    # 2
+                                    message = <some string of non-zero length, for use
+                                               in displaying to the user>,
+                                    other_type = PACKET_POKER_TABLE_JOIN,           # 71
+                                    serial = <player's serial id>,
+                                    game_id= 0
+                                )
+
+                        (b)
+                            a packet, :class:`PACKET_POKER_TABLE <pokerpackets.networkpackets.PacketPokerTable>`, with serial 0 will be sent.
+                            It will contain no meaningful information.  (THIS BEHAVIOR IS
+                            DEPRECATED, and is left only for older clients.
+                            New clients should not rely on this behavior.)
     Direction   server <= client
     serial      integer uniquely identifying a player.
     game_id     integer uniquely identifying a game.
