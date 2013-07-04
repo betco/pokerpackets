@@ -1908,11 +1908,13 @@ class PacketPokerGetPlayerInfo(Packet):
     Semantics   ask the server for a PacketPokerPlayerInfo packet
                 describing the player that is logged in with this connection.
 
-                If the user is not logged in the following packet is returned ::
+                If the user is not logged in the following packet is returned::
 
-                    PacketError(code = PacketPokerGetPlayerInfo.NOT_LOGGED,
-                            message = "Not logged in",
-                            other_type = :class:`PACKET_POKER_GET_PLAYER_INFO <pokerpackets.networkpackets.PacketPokerGetPlayerInfo>`)
+                    PacketError(
+                        code = PacketPokerGetPlayerInfo.NOT_LOGGED, # 1
+                        message = "Not logged in",
+                        other_type = PACKET_POKER_GET_PLAYER_INFO   # 123
+                    )
 
                 If the user is logged in a PacketPokerPlayerInfo packet is sent
                 to the client.
@@ -2414,7 +2416,9 @@ class PacketPokerGetTourneyManager(Packet):
 
                       If the tourney_serial is not found occurs, the server will send back ::
 
-                        PacketError(other_type = :class:`PACKET_POKER_GET_TOURNEY_MANAGER <pokerpackets.networkpackets.PacketPokerGetTourneyManager>`)
+                        PacketError(
+                            other_type = PACKET_POKER_GET_TOURNEY_MANAGER     # 148
+                        )
 
                       with the "code" field name set as follows:
     DOES_NOT_EXIST    the "tourney_serial" field does not match any existing
@@ -2833,13 +2837,15 @@ class PacketPokerTablePicker(PacketPokerId):
                         In the case of failure, an error packet as follows will be sent
                         to the client::
 
-                          PacketPokerError(code      = PacketPokerTableJoin.GENERAL_FAILURE,
-                                           message   = <some string of non-zero length, for use
-                                                       in displaying to the user>,
-                                          other_type = :class:`PACKET_POKER_TABLE_PICKER <pokerpackets.networkpackets.PacketPokerTablePicker>`,
-                                          serial     = <player's serial id>,
-                                          game_id    = <if failure occured before table matching criteria was identified: 0
-                                                        else: game.id for table where join was attempted>)
+                            PacketPokerError(
+                                code = PacketPokerTableJoin.GENERAL_FAILURE,    # 2
+                                message = <some string of non-zero length,
+                                    for use in displaying to the user>,
+                                other_type = PACKET_POKER_TABLE_PICKER,         # 165
+                                serial = <player's serial id>,
+                                game_id = <if failure occured before table matching criteria was identified: 0
+                                                else: game.id for table where join was attempted>
+                            )
 
                         In this case of success, the client can expect to receive all
                         the packets that it would expect to receive in response to any
@@ -2888,7 +2894,6 @@ Packet.infoDeclare(globals(), PacketPokerTablePicker, Packet, "POKER_TABLE_PICKE
 ########################################
 class PacketPokerCreateTourney(PacketSerial):
     """\
-
     =================== ===============================================================================================================================================================================================
     Semantics           The authorized player represented by "serial",
                         seeks to create a new sit-n-go tournament for the players in
@@ -2905,8 +2910,8 @@ class PacketPokerCreateTourney(PacketSerial):
                         If at least one user cannot be registered, the response will be::
 
                               PacketPokerError(
-                                other_type = :class:`PACKET_POKER_CREATE_TOURNEY <pokerpackets.networkpackets.PacketPokerCreateTourney>`,
-                                code       = REGISTRATION_FAILED
+                                other_type = PACKET_POKER_CREATE_TOURNEY,     # 166
+                                code       = REGISTRATION_FAILED              # 1
                                 serial     = the serial of the tournament for which registration failed
 
                                 Note: the list of players for which registration has failed is included
