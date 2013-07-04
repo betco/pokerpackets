@@ -197,16 +197,15 @@ Packet.infoDeclare(globals(), PacketPing, Packet, "PING", 5) # 5 #
 
 class PacketSerial(Packet):
     """\
-Semantics: the serial number of the authenticated user
-           associated to the client after a PacketLogin
-           was sent. This packet is sent to the client
-           after the PacketAuthOk acknowledging the success
-           of the authentication.
-
-Direction: server => client
-
-serial: the unique number associated to the user.
-    """
+    =========== ========================================================================================
+    Semantics   the serial number of the authenticated user
+                associated to the client after a PacketLogin
+                was sent. This packet is sent to the client
+                after the PacketAuthOk acknowledging the success
+                of the authentication.
+    Direction   server => client
+    serial      the unique number associated to the user.
+    =========== ========================================================================================    """
 
     info = Packet.info + (
         ('serial', 0, 'I'),
@@ -225,50 +224,48 @@ Packet.infoDeclare(globals(), PacketQuit, Packet, "QUIT", 7) # 7  #
 
 class PacketAuthOk(Packet):
     """\
-Semantics: authentication request succeeded.
-
-Direction: server => client
-    """
+    =========== ========================================================================================
+    Semantics   authentication request succeeded.
+    Direction   server => client
+    =========== ========================================================================================    """
 
 Packet.infoDeclare(globals(), PacketAuthOk, Packet, "AUTH_OK", 8) # 8 #
 
 
 class PacketAuthRefused(PacketError):
     """\
-Semantics: authentication request was refused by the server.
-
-Direction: server => client
-
-message: human readable reason for the authentication failure
-code: machine readable code matching the human readable message
-      the list of which can be found in the PacketPokerSetAccount
-      packet definition
-other_type: the type of the packet that triggered the authentication
-            error, i.e. :class:`PACKET_LOGIN <pokerpackets.packets.PacketLogin>`
-    """
+    ============ =======================================================================================
+    Semantics    authentication request was refused by the server.
+    Direction    server => client
+    message      human readable reason for the authentication failure
+    code         machine readable code matching the human readable message
+                 the list of which can be found in the PacketPokerSetAccount
+                 packet definition
+    other_type   the type of the packet that triggered the authentication
+                 error, i.e. :class:`PACKET_LOGIN <pokerpackets.packets.PacketLogin>`
+    ============ =======================================================================================    """
 
 Packet.infoDeclare(globals(), PacketAuthRefused, Packet, "AUTH_REFUSED", 9) # 9 #
 
 
 class PacketLogin(Packet):
     """\
-Semantics: authentify user "name" with "password".
+    =========== ========================================================================================
+    Semantics   authentify user "name" with "password".
+    Direction   server <= client
 
-Direction: server <= client
+                If the user/password combination is valid, the
+                PacketAuthOk packet will be sent back to the client,
+                immediately followed by the PacketSerial packet that
+                holds the serial number of the user.
 
-If the user/password combination is valid, the
-PacketAuthOk packet will be sent back to the client,
-immediately followed by the PacketSerial packet that
-holds the serial number of the user.
-
-If the user/password combination is invalid, the
-PacketAuthRefused packet will be sent back to the client.
-If the user is already logged in, a PacketError is sent
-with code set to PacketLogin.LOGGED.
-
-name: valid user name as a string
-password: matching password string
-    """
+                If the user/password combination is invalid, the
+                PacketAuthRefused packet will be sent back to the client.
+                If the user is already logged in, a PacketError is sent
+                with code set to PacketLogin.LOGGED.
+    name        valid user name as a string
+    password    matching password string
+    =========== ========================================================================================    """
 
     LOGGED = 1
     
@@ -282,22 +279,21 @@ Packet.infoDeclare(globals(), PacketLogin, Packet, "LOGIN", 10) # 10 #
 
 class PacketAuth(Packet):
     """\
-Semantics: authentify user with "auth" token.
+    =========== ========================================================================================
+    Semantics   authentify user with "auth" token.
+    Direction   server <= client
 
-Direction: server <= client
+                If the auth string is valid, the
+                PacketAuthOk packet will be sent back to the client,
+                immediately followed by the PacketSerial packet that
+                holds the serial number of the user.
 
-If the auth string is valid, the
-PacketAuthOk packet will be sent back to the client,
-immediately followed by the PacketSerial packet that
-holds the serial number of the user.
-
-If the auth string is invalid, the
-PacketAuthRefused packet will be sent back to the client.
-If the user is already logged in, a PacketError is sent
-with code set to PacketAuth.LOGGED.
-
-auth: valid user auth hash as a string
-    """
+                If the auth string is invalid, the
+                PacketAuthRefused packet will be sent back to the client.
+                If the user is already logged in, a PacketError is sent
+                with code set to PacketAuth.LOGGED.
+    auth        valid user auth hash as a string
+    =========== ========================================================================================    """
     LOGGED = 1
     info = Packet.info + (
         ('auth', 'unknown', 's'),
