@@ -2418,10 +2418,18 @@ class PacketPokerMonitorEvent(Packet):
     
     ####
     # A tournament has been canceled
-    # param 1 = tourney serial
+    # param1 = tourney serial
     #
     TOURNEY_CANCELED = 11
 
+    ###
+    # A user gets a rank in a tournament 
+    # param1 = user serial
+    # param2 = tourney serial
+    # param3 = rank
+    #
+    RANK = 12
+    
     info = Packet.info + (
         ('event', 0, 'I'),
         ('param1', 0, 'I'),
