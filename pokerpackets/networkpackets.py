@@ -2931,7 +2931,9 @@ class PacketPokerCreateTourney(PacketSerial):
 
                         Upon success, the response will be PacketAck() for the new sit-n-go tournament.
                         If the request is issued by a user that is not authentified, the response will be:
+
                               PacketAuthRequest()
+
                         If at least one user cannot be registered, the response will be::
 
                               PacketPokerError(

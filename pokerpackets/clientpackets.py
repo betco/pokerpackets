@@ -296,10 +296,12 @@ class PacketPokerEndRound(PacketPokerId):
                 betting round. This packet is sent when the client side
                 knows that the round is finished but before the corresponding
                 packet (:class:`PACKET_POKER_STATE <pokerpackets.networkpackets.PacketPokerState>`) has been received from the server.
+
                 It will be followed by the :class:`POKER_BEGIN_ROUND <pokerpackets.clientpackets.PacketPokerBeginRound>` packet, either
                 immediately if the server has no delay between betting rounds
                 or later if the server waits a few seconds between two betting
                 rounds.
+
                 It is not inferred at the end of the last betting round.
     game_id     integer uniquely identifying a game.
     =========== ======================================================================================================================================================================================
@@ -424,14 +426,14 @@ class PacketPokerBeginRound(PacketPokerId):
 
                 Example applied to holdem::
 
-                         state
+                             state
 
-                         blind     END
-                BEGIN    preflop   END
-                BEGIN    flop      END
-                BEGIN    turn      END
-                BEGIN    river
-                         end
+                             blind     END
+                    BEGIN    preflop   END
+                    BEGIN    flop      END
+                    BEGIN    turn      END
+                    BEGIN    river
+                             end
     game_id     integer uniquely identifying a game.
     =========== ======================================================================================================================================================================================
     """
