@@ -1033,7 +1033,8 @@ class PacketPokerPlayerLeave(PacketPokerSeat):
                 hand the server will wait until the end of the turn to relay the
                 packet to other players involved in the same hand. A player is allowed
                 to leave in the middle of the game but the server hides this to the
-                other players.
+                other players. If a player leaves using this packet, all money the player
+                did not already bet will be transferred back to his bankroll immediately.
     serial      integer uniquely identifying a player.
     game_id     integer uniquely identifying a game.
     seat        the seat left in the range [0,9]
