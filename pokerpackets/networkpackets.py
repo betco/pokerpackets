@@ -784,10 +784,30 @@ class PacketPokerTableSelect(PacketString):
     Semantics   request the list of tables matching the "string" constraint.
                 The answer is a possibly empty :class:`PACKET_POKER_TABLE_LIST <pokerpackets.networkpackets.PacketPokerTableList>` packet.
     Direction   server <=  client
-    string      currency<tabulation>variant
-                Examples: 1 holdem selects all holdem tables using this currency
-                The specials value "my" restricts the search to the tables
-                in which the player id attached to the connection is playing.
+    string      
+                1. 
+                    If string is empty "" or "all" then all tables are returned. (If string is all even tables from other resthosts are returned)
+
+                2.
+                    If string is "my" all tables are returned where the player identified by serial have joined the table.
+
+                3.
+                    If the string starts with "filter" 
+
+                    - full tables will be not be transmitted, 
+                    - empty tables with the same name will only be returned once
+
+                    You can filter the list further by adding the following (seperated with spaces):
+
+                    - "-m<min buy-in>" to indicate the minimum buy-in the player want to pay (to filter out every table where the maximum buy-in is less than this value.)
+                    - "-M<max buy-in>" to indicate the maximum buy-in the player want to pay. (Mind the capital M)
+                    - "-f" to force that full tables will be shown
+
+                    If the player want to get only tables where he has to pay a buy-in between 1000 and 3000 (both sides included) the string would be like: "filter -m1000 -M3000"
+
+                4.
+                    If nothing from above matches, it is asumed, that that the string is the exact name of a table
+
     =========== =======================================================================================================================================================================================================
     """
 
@@ -2011,16 +2031,12 @@ class PacketPokerProcessingHand(PacketPokerId):
     Direction   server <= client
     Context     should be sent by the client immediately after receiving
                 the :class:`POKER_START <pokerpackets.networkpackets.PacketPokerStart>` packet.
-    Note        because of a race condition, it will not work as expected
-                if the game plays too fast. For instance, if the hand finishes
-                before the packet :class:`POKER_PROCESSING_HAND <pokerpackets.networkpackets.PacketPokerProcessingHand>` is received by the server.
-                This will typically happen the first time a player gets a seat at the
-                table.
-    Note        because of a race condition, it will not work as expected
-                if the game plays too fast. For instance, if the hand finishes
-                before the packet :class:`POKER_PROCESSING_HAND <pokerpackets.networkpackets.PacketPokerProcessingHand>` is received by the server.
-                This will typically happen the first time a player gets a seat at the
-                table.
+    Note        When this packet was send, the server will wait for the player until 
+                a :class:`PACKET_POKER_PROCESSING_HAND <pokerpackets.networkpackets.PacketPokerProcessingHand>`
+                was send. Keep in mind, that the server will wait with the hand he is currently processing,
+                The first and the best option is to send this packet right after the 
+                beginning of the hand.
+
     serial      integer uniquely identifying a player.
     game_id     integer uniquely identifying a game.
     =========== =======================================================================================================================================================================================================
