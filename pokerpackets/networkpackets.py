@@ -1375,9 +1375,6 @@ class PacketPokerBlind(PacketPokerInt):
     Note        the amount may be lower than requested by the betting structure
                 when in tournament. Ring games will refuse a player to enter the with
                 less than the required amount for blind or/and antes.
-    Note        the amount may be lower than requested by the betting structure
-                when in tournament. Ring games will refuse a player to enter the with
-                less than the required amount for blind or/and antes.
     dead        amount paid for the dead (goes to the pot).
     amount      amount paid for the blind (live for the next betting round).
     serial      integer uniquely identifying a player.
