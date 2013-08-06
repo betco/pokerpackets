@@ -2921,6 +2921,7 @@ attributes:
     chips_max: unsigned long long (8 bytes)
     player_chips_max_serial: unsigned int (4 bytes)
     player_chips_max_name: string: <length of string as unsigned short (2 bytes)><string>
+    table_count: unsigned int (4 bytes)
 
 ### PacketPokerTourneyCancel (id: 159)
 
