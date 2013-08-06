@@ -2682,6 +2682,7 @@ class PacketPokerTourneyPlayerStats(PacketSerial):
     chips_max                 the amount of chips the highest ranked player has
     player_chips_max_serial   the serial of the currently leading player
     player_chips_max_name     the name of the currently leading player
+    table_count               the number of tables that are currently engaged in the tourney
     ========================= =========================================================================================================================================================================================
     """
     info = PacketSerial.info + (
@@ -2692,6 +2693,7 @@ class PacketPokerTourneyPlayerStats(PacketSerial):
             ('chips_max',0,'Q'),
             ('player_chips_max_serial',0,'I'),
             ('player_chips_max_name','noname','s'),
+            ('table_count',0,'I'),
             )
     
 Packet.infoDeclare(globals(), PacketPokerTourneyPlayerStats, Packet, "POKER_TOURNEY_PLAYER_STATS", 158) # 0x9e # %SEQ%
