@@ -3039,17 +3039,20 @@ struct packet_poker_player_stats {
     
     
     serial: user_serial
+    game_id: the game id the player is currently sitting at
     tourney_serial: serial of the tourney
 
 attributes:
 
     serial: unsigned int (4 bytes)
+    game_id: unsigned int (4 bytes)
     tourney_serial: unsigned int (4 bytes)
 
 c example:
 ```c
 struct packet_poker_tourney_rebuy {
     unsigned int serial;
+    unsigned int game_id;
     unsigned int tourney_serial;
 }
 ```

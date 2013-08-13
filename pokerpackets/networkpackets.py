@@ -2804,7 +2804,7 @@ class PacketPokerPlayerStats(PacketPokerId):
 Packet.infoDeclare(globals(), PacketPokerPlayerStats, Packet, "POKER_PLAYER_STATS", 161) # 161 # 0xa1 # %SEQ%
 
 ########################################
-class PacketPokerTourneyRebuy(PacketSerial):
+class PacketPokerTourneyRebuy(PacketPokerId):
     """\
     Semantics: When a client wants to rebuy during a tourney he sends this packet.
 
@@ -2812,6 +2812,7 @@ class PacketPokerTourneyRebuy(PacketSerial):
 
 
     serial: user_serial
+    game_id: the game id the player is currently sitting at
     tourney_serial: serial of the tourney
     """
 
@@ -2820,7 +2821,7 @@ class PacketPokerTourneyRebuy(PacketSerial):
     REBUY_LIMIT_EXEEDED = 4
     OTHER_ERROR = 8
 
-    info = PacketSerial.info + (
+    info = PacketPokerId.info + (
         ('tourney_serial', 0, 'I'),
     )
 
