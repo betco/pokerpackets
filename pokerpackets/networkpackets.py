@@ -2806,14 +2806,14 @@ Packet.infoDeclare(globals(), PacketPokerPlayerStats, Packet, "POKER_PLAYER_STAT
 ########################################
 class PacketPokerTourneyRebuy(PacketPokerId):
     """\
-    Semantics: When a client wants to rebuy during a tourney he sends this packet.
-
-    Direction: client => server
-
-
-    serial: user_serial
-    game_id: the game id the player is currently sitting at
-    tourney_serial: serial of the tourney
+    ================= =================================================================================================================================================================================================    
+    Semantics         When a client wants to rebuy during a tourney he sends this packet.
+                      The server sends this packet as a response, when a rebuy has successfully taken place.
+    Direction         client <=> server
+    serial            integer uniquely identifying a player.
+    game_id           integer uniquely identifying a game.
+    tourney_serial    integer uniquely identifying a tourney.
+    ================= =================================================================================================================================================================================================    
     """
 
     NOT_ENOUGH_MONEY = 1
