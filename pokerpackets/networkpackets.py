@@ -3033,16 +3033,19 @@ Packet.infoDeclare(globals(), PacketPokerLongPollReturn, Packet, "POKER_LONG_POL
 
 class PacketSetOption(PacketPokerId):
     """
+    =========   ========================================================
     serial:     the user_serial that wants to set an option.
     game_id:    the game that should be affetcted by this option.
     name:       the option name.
     value:      the option value as a string.
+    =========   ========================================================
 
     If the name is not known, or the value doesn't match to the name an PACKET_ERROR is send.
     If everything is Ok, a PACKET_ACK is sent.
     """
     ERROR_UNKNOWN_NAME = 1
     ERROR_WRONG_VALUE = 2
+    ERROR_TABLE_NOT_FOUND = 3
 
     AUTO_BLIND_ANTE = 1
     AUTO_FOLD = 2
