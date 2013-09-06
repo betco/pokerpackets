@@ -2847,6 +2847,18 @@ Packet.infoDeclare(globals(), PacketPokerBetLimits, PacketPokerId, "POKER_BET_LI
 
 ########################################
 
+class PacketPokerUpdateMoney(Packet):
+
+    info = Packet.info + (
+        ('game_id', 0 , 'I'),
+        ('serials', [], 'Il'),
+        ('chips', [], 'Il'),
+        ('absolute', True, 'bool'),
+    )
+Packet.infoDeclare(globals(), PacketPokerUpdateMoney, Packet, "POKER_UPDATE_MONEY", 164)
+
+########################################
+
 class PacketPokerTablePicker(PacketPokerId):
     """\
 
