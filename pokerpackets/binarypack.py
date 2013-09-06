@@ -146,6 +146,15 @@ def _pack_Il(_list, buf, __cache={}):
     buf.append(struct.pack(list_len, *_list))
     return struct.size
 
+def _pack_il(_list, buf, __cache={}):
+    list_len = len(_list)
+    try:
+        struct = __cache[list_len]
+    except KeyError:
+        struct = __cache[list_len] = Struct('!B'+str(list_len)+'i')
+    buf.append(struct.pack(list_len, *_list))
+    return struct.size
+
 def _pack_pl(packets, buf):
     packets_len = len(packets)
     buf.append(_s_H.pack(packets_len))
@@ -265,6 +274,19 @@ def _unpack_Il(data, offset):
         list(struct.unpack_from(data, offset + _s_B.size)) if length else []
     )
 
+def _unpack_il(data, offset):
+    length, = _s_B.unpack_from(data, offset)
+    struct_format = '!%di' % (length,)
+    try:
+        struct = _struct_cache[struct_format]
+    except KeyError:
+        struct = Struct(struct_format)
+        _struct_cache[struct_format] = struct
+    return(
+        offset + _s_B.size + struct.size,
+        list(struct.unpack_from(data, offset + _s_B.size)) if length else []
+    )
+
 def _unpack_pl(data, offset):
     length, = _s_H.unpack_from(data, offset)
     packets = []
@@ -323,6 +345,7 @@ _s_type2pack = {
     'Bl': _pack_Bl,
     'Hl': _pack_Hl,
     'Il': _pack_Il,
+    'il': _pack_il,
     'pl': _pack_pl,
     'money': _pack_money,
     'players': _pack_players,
@@ -344,6 +367,7 @@ _s_type2unpack = {
     'Bl': _unpack_Bl,
     'Hl': _unpack_Hl,
     'Il': _unpack_Il,
+    'il': _unpack_il,
     'pl': _unpack_pl,
     'money': _unpack_money,
     'players': _unpack_players,
