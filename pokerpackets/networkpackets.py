@@ -2848,11 +2848,40 @@ Packet.infoDeclare(globals(), PacketPokerBetLimits, PacketPokerId, "POKER_BET_LI
 ########################################
 
 class PacketPokerUpdateMoney(Packet):
+    """\
+    =================== ======================================================================
+    Semantics           Warning! This package will kill the current hand, if it is running
+                        right now. Every person will fold. If some players are allready
+                        all-in, or broke, they will get some money so they will not get kicked
+                        out of the game. Afterwards the players money is added.
+
+                        In case of an Error, PacketError will be returned. It is possible that
+                        some players have money updated.
+
+                        If everything was ok, PacketAck will be returned.
+
+    game_id             the id of the game where the player money should be updated
+    serials             a list of serials where that should be updated (you can reduce the
+                        the probability of errors when you use all player serials that are
+                        sitting on the table)
+    chips               a list of chips. Each entry will be the new money value of the
+                        corresponding player serial from the `serials`. The first entry will
+                        define the money of the first serial from the serials list.
+
+                        It is important that absolute amounts must be positive or 0. And
+                        relative amounts must not result in a negative value. Otherwise an
+                        Error will be returned and the money of this player will not be
+                        changed.
+    absolute            will define if the chips value is an absolute or an relative value.
+                        Absolute vaules are less likely to produce errors. The default value
+                        is True, for an absolute interpretation.
+    =================== ======================================================================
+    """
 
     info = Packet.info + (
         ('game_id', 0 , 'I'),
         ('serials', [], 'Il'),
-        ('chips', [], 'Il'),
+        ('chips', [], 'il'),
         ('absolute', True, 'bool'),
     )
 Packet.infoDeclare(globals(), PacketPokerUpdateMoney, Packet, "POKER_UPDATE_MONEY", 164)
