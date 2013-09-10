@@ -2877,6 +2877,11 @@ class PacketPokerUpdateMoney(Packet):
                         is True, for an absolute interpretation.
     =================== ======================================================================
     """
+    NO_ADMIN = 1
+    NO_TABLE = 2
+    SERIALS_MONEY_MISMATCH = 3
+
+    OTHER_ERROR = 9
 
     info = Packet.info + (
         ('game_id', 0 , 'I'),
