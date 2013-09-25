@@ -1698,22 +1698,21 @@ class PacketPokerTourneySelect(PacketString):
                 The answer is a :class:`PACKET_POKER_TOURNEY_LIST <pokerpackets.networkpackets.PacketPokerTourneyList>` packet. If no tournament matches
                 the constraint, the list will be empty.
     Direction   server <=  client
-    string      1) empty string selects all tournaments
+    string      a string that describes how the tourneys should be filtered
 
-                2) a string that contains no tabulation selects
-                   the tournament with the same name
+                1. If the string is empty, all tourneys are returned that are not completed
+                    or finished less than one hour agoi.
+                2. If the string starts with filter, the string is splited at white space and 
+                    are interpreted as arguments as follows:
+                        "-no-sng" will just show regular tourneys
+                        "-sng" will just show sit and gos (ignoring strip poker games and challenges)
+                        "-p<MINIMUM MINUTES>" e.g. -p5 sets the lower time limit to 5 minutes ago (defaul 0)
+                        "-n<MAXIMUM MINUTES>" e.g. -n60 sets the upper time limit to one hour (default to 1440 =24h)
 
-                3) a string with a tabulation selects all tournaments
-                   of a given type (sit&go or regular) that can be played
-                   using a given currency. The string before the tabulation
-                   is the name of the currency, the string after the tabulation
-                   distinguishes between sit&go and regular.
-
-                Examples: 1<tabulation>sit_n_go selects all sit&go tournaments
-                          using currency 1.
-
-                          2<tabulation>regular selects all regular tournaments
-                          using currency 2
+                        the time limit is used to find tournes that start between those minutes or start to
+                        register between those values.
+                        "-limit<MAX TOURNEYS>" limit the returned packets to this value
+                3. Otherwise the tourneys with the name of the query_string are returned
     =========== =======================================================================================================================================================================================================
     """
 
