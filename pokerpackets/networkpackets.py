@@ -791,7 +791,9 @@ class PacketPokerTableSelect(PacketString):
                 2.
                     If string is "my" all tables are returned where the player identified by serial have joined the table.
 
-                3.
+                3.  If string is "mytourneys" all tourney tables are returned where the player identified by serial have joined the table.
+
+                4.
                     If the string starts with "filter" 
 
                     - full tables will be not be transmitted, 
@@ -805,7 +807,7 @@ class PacketPokerTableSelect(PacketString):
 
                     If the player want to get only tables where he has to pay a buy-in between 1000 and 3000 (both sides included) the string would be like: "filter -m1000 -M3000"
 
-                4.
+                5.
                     If nothing from above matches, it is asumed, that that the string is the exact name of a table
 
     =========== =======================================================================================================================================================================================================
