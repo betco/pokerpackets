@@ -3035,6 +3035,9 @@ class PacketPokerCreateTourney(PacketSerial):
     players_quota       Quota of the tournament. If smaller than len(players), len(players)
                         is used (i.e. the tourney starts immediately).
     players             Serials of the players participating in the tournament.
+    breaks_duration     an integer, breaks duration in seconds, defaults to 0 (0 means no breaks at all)
+    breaks_first        an integer, breaks first in seconds, defaults to 7200
+    breaks_interval     an integer, breaks interval in seconds, defaults to 3600
     =================== ===============================================================================================================================================================================================
     """
     REGISTRATION_FAILED = 1
@@ -3058,6 +3061,9 @@ class PacketPokerCreateTourney(PacketSerial):
         ('sit_n_go','y','cbool'),
         ('start_time',0,'I'),
         ('players', [], 'Il'),
+        ('breaks_duration', 0, 'I'),
+        ('breaks_first', 7200, 'I'),
+        ('breaks_interval', 3600, 'I'),
         )
 
 Packet.infoDeclare(globals(), PacketPokerCreateTourney, Packet, "POKER_CREATE_TOURNEY", 166) # 166 # 0xa6 # %SEQ%
