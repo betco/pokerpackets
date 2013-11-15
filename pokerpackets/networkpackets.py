@@ -3038,6 +3038,7 @@ class PacketPokerCreateTourney(PacketSerial):
     breaks_duration     an integer, breaks duration in seconds, defaults to 0 (0 means no breaks at all)
     breaks_first        an integer, breaks first in seconds, defaults to 7200
     breaks_interval     an integer, breaks interval in seconds, defaults to 3600
+    schedule_serial     the serial of the tourney_schedule, might be zero
     =================== ===============================================================================================================================================================================================
     """
     REGISTRATION_FAILED = 1
@@ -3064,6 +3065,7 @@ class PacketPokerCreateTourney(PacketSerial):
         ('breaks_duration', 0, 'I'),
         ('breaks_first', 7200, 'I'),
         ('breaks_interval', 3600, 'I'),
+        ('schedule_serial', 0, 'I'),
         )
 
 Packet.infoDeclare(globals(), PacketPokerCreateTourney, Packet, "POKER_CREATE_TOURNEY", 166) # 166 # 0xa6 # %SEQ%
