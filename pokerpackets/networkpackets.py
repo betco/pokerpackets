@@ -1741,7 +1741,7 @@ class PacketPokerTourney(Packet):
         ('variant', 'holdem', 's'),
         ('state', 'announced', 's'),
         ('name', 'noname', 's'),
-        ('skin', 'default', 's')
+        ('skin', 'default', 's'),
         ('schedule_serial', 0, 'I'),
         )
     
