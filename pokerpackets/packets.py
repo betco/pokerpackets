@@ -104,6 +104,7 @@ class Packet:
 
         # binpack info
         packet_type._binarypack_info = [(attr, s_type) for attr, _default, s_type in packet_type.info if s_type != 'no net']
+        packet_type._msgpack_info = [(attr, s_type) for attr, _default, s_type in packet_type.info if s_type not in ('no net', 'type')]
 
         # fast pack
         struct_format = '!BH'
