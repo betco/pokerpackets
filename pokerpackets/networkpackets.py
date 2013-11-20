@@ -1725,7 +1725,6 @@ class PacketPokerTourney(Packet):
 
     info = Packet.info + ( 
         ('serial', 0, 'I'),
-        ('schedule_serial', 0, 'no net'),
         ('buy_in', 10, 'I'),
         ('rake', 0, 'I'),
         ('start_time', 0, 'I'),
@@ -1743,6 +1742,7 @@ class PacketPokerTourney(Packet):
         ('state', 'announced', 's'),
         ('name', 'noname', 's'),
         ('skin', 'default', 's')
+        ('schedule_serial', 0, 'I'),
         )
     
 Packet.infoDeclare(globals(), PacketPokerTourney, Packet, "POKER_TOURNEY", 112) # 112 # 0x70
