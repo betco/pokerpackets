@@ -20,7 +20,7 @@ def dict2packet(dict_packet):
             dict_packet[attr] = [dict2packet(d)[0] for d in dict_packet[attr]]
 
     try:
-        return packet_type(**dict_packet), numeric_type
+        return packet_type(__convert=True,**dict_packet), numeric_type
     except:
         return PacketError(
             message = "Unable to istantiate %s(%s): %s" % (dict_packet.get('type'), dict_packet, format_exc()),

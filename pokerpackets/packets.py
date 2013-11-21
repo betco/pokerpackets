@@ -69,8 +69,16 @@ class Packet:
     info = ()
 
     def __init__(self, **kw):
-        if kw:
-            self.__dict__ = kw
+        if kw.pop("__convert", False):
+            tmp_key_to_type = dict((n,t) for n,d,t in self.__class__.info)
+            for key, value in kw.iteritems():
+                if tmp_key_to_type[key] in 'IBibHhlLqQ':
+                    self.__dict__[key] = int(value)
+                else:
+                    self.__dict__[key] = value
+        else:
+            if kw:
+                self.__dict__ = kw
             
     def __str__(self):
         string = "%s(%d)" % (self.__class__.__name__, self.__class__.type)
