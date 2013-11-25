@@ -105,8 +105,8 @@ class Packet:
             setattr(packet_type, attr, default)
 
         # binpack info
-        packet_type._binarypack_info = [(attr, s_type) for attr, _default, s_type in packet_type.info if s_type != 'no net']
-        packet_type._msgpack_info = [(attr, s_type) for attr, _default, s_type in packet_type.info if s_type not in ('no net', 'type')]
+        packet_type.binarypack_info = [(attr, s_type) for attr, _default, s_type in packet_type.info if s_type != 'no net']
+        packet_type.msgpack_info = [(attr, s_type) for attr, _default, s_type in packet_type.info if s_type not in ('no net', 'type')]
 
         # fast pack
         struct_format = '!BH'
@@ -129,7 +129,7 @@ class Packet:
             if attr_names:
                 fast_struct = Struct(struct_format)
                 fast_struct_size = fast_struct.size - 3 # 3 is the size of the packet head
-                packet_type._binarypack_fast_pack = lambda p: fast_struct.pack(
+                packet_type.binarypack_fast_pack = lambda p: fast_struct.pack(
                     index,
                     fast_struct_size,
                     *[getattr(p, attr) for attr in attr_names]
