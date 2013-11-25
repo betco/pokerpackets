@@ -24,7 +24,7 @@
 # PACKET_POKER_CHIPS_BET2PLAYER
 # PACKET_POKER_CHIPS_POT_MERGE
 #
-from pokerpackets.packets import Packet, type2type_id, type_id2type, name2type, PacketNames, PacketFactory
+from pokerpackets.packets import Packet, type2type_id, type_id2type, name2type, type2name, PacketNames, PacketFactory
 from pokerpackets.networkpackets import PacketPokerCards, PacketPokerId, PacketPokerPosition, PacketPokerSit, PacketPokerSitOut
 
 class PacketPokerBestCards(PacketPokerCards):

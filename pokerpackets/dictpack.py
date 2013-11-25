@@ -1,57 +1,67 @@
 
 from traceback import format_exc
 
-from pokerpackets.packets import type2type_id, name2type, type_id2type, PacketError
+from pokerpackets.packets import type2type_id, name2type, type_id2type, PacketError, type2name
 import pokerpackets.networkpackets
 import pokerpackets.clientpackets
 
-def dict2packet(dict_packet):
-    numeric_type = type(dict_packet['type']) == int
-    try:
-        packet_type = type_id2type[dict_packet['type']] if type(dict_packet['type']) == int else name2type[dict_packet['type']]
-        del dict_packet['type']
-    except KeyError:
-        print name2type
-        return PacketError(message = "Invalid packet type_id/name: " + repr(dict_packet.get('type'))), numeric_type
+from numbers import Integral
 
-    # recurse for packetlists
+def pack(packet, numeric_type=True):
+    try:
+        packet_dict = {
+            'type': type2type_id[packet.__class__] if numeric_type else type2name[packet.__class__]
+        }
+    except KeyError:
+        return packet2dict(PacketError(
+            message="Error converting packet to dict %s: %s" % (repr(packet), format_exc())
+        ), numeric_type)
+
+    for attr, default, s_type in packet.__class__.info:
+        if s_type is 'no net' or attr is 'type':
+            continue
+
+        elif s_type is 'pl':
+            packet_dict[attr] = [packet2dict(p, numeric_type) for p in getattr(packet, attr)]
+
+        elif s_type is 'money':
+            money = getattr(packet, attr)
+            packet_dict[attr] = dict(zip([(k if isinstance(k, Integral) else 'X' + k, v) for k, v in money.items()]))
+
+        else:
+            packet_dict[attr] = getattr(packet, attr)
+
+    return packet_dict
+
+def unpack(dict_packet):
+    try:
+        packet_type_mixed = dict_packet.pop('type')
+    except KeyError:
+        return PacketError(message="packet type not set"), False
+
+    numeric_type = isinstance(packet_type_mixed, Integral)
+
+    try:
+        packet_type = type_id2type[packet_type_mixed] if numeric_type else name2type[packet_type_mixed]
+    except KeyError:
+        return PacketError(message="Invalid packet type_id/name: " + repr(packet_type_mixed)), numeric_type
+
+    # recurse for packetlists, check for format erros
     for attr, _default, s_type in packet_type.info:
-        if s_type == 'pl' and attr in dict_packet:
+        if attr not in dict_packet:
+            continue
+
+        elif s_type == 'pl' and attr in dict_packet:
             dict_packet[attr] = [dict2packet(d)[0] for d in dict_packet[attr]]
 
     try:
-        return packet_type(__convert=True,**dict_packet), numeric_type
+        return packet_type(**dict_packet), numeric_type
     except:
         return PacketError(
-            message = "Unable to istantiate %s(%s): %s" % (dict_packet.get('type'), dict_packet, format_exc()),
-            other_type = type2type_id.get(packet_type, 3)
-        ), numeric_type
+            message="Unable to instantiate %s(%s): %s" % (packet_type_mixed, dict_packet, format_exc()),
+            other_type = packet_type.type if numeric_type else PacketNames[packet_type.type]
+        )
 
-def packet2dict(packet, numeric_type=True):
-    packet_type = packet.__class__
-    type_id = type2type_id.get(packet_type)
-
-    if type_id == None:
-        #TODO error handling
-        return
-
-    result = {
-        'type': type_id if numeric_type else packet_type.__name__
-    }
-
-    for attr, _default, s_type in packet_type.info:
-        if s_type == 'no net':
-            continue
-        elif s_type == 'pl':
-            result[attr] = [packet2dict(p, numeric_type) for p in getattr(packet, attr)]
-
-        # FIXME get rid of the X+int crap
-        elif s_type == 'money':
-            money = getattr(packet, attr)
-            result[attr] = {}
-            for k, v in money.iteritems():
-                result[attr]['X%d' % (k,) if type(k) in (int, long) else k] = v
-        else:
-            result[attr] = getattr(packet, attr)
-
-    return result
+# compat
+dict2packet = unpack
+packet2dict = pack

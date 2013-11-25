@@ -30,6 +30,7 @@ from pokerpackets import log as packets_log
 log = packets_log.get_child('packets')
 
 name2type = {}
+type2name = {}
 type2type_id = {}
 type_id2type = {}
 PacketFactory = {}
@@ -69,16 +70,8 @@ class Packet:
     info = ()
 
     def __init__(self, **kw):
-        if kw.pop("__convert", False):
-            tmp_key_to_type = dict((n,t) for n,d,t in self.__class__.info)
-            for key, value in kw.iteritems():
-                if tmp_key_to_type[key] in 'IBibHhlLqQ':
-                    self.__dict__[key] = int(value)
-                else:
-                    self.__dict__[key] = value
-        else:
-            if kw:
-                self.__dict__ = kw
+        if kw:
+            self.__dict__ = kw
             
     def __str__(self):
         string = "%s(%d)" % (self.__class__.__name__, self.__class__.type)
@@ -99,6 +92,7 @@ class Packet:
         # setup dictionary
         if 'type2type_id' not in dictionary: dictionary['type2type_id'] = {}
         if 'type_id2type' not in dictionary: dictionary['type_id2type'] = {}
+        if 'type2name' not in dictionary: dictionary['type2name'] = {}
         if 'name2type' not in dictionary: dictionary['name2type'] = {}
         if 'PacketFactory' not in dictionary: dictionary['PacketFactory'] = {}
         if PACKET_NONE not in dictionary['PacketFactory']: dictionary['PacketFactory'][PACKET_NONE] = Packet
@@ -144,6 +138,7 @@ class Packet:
         # insert type into dictionary
         dictionary['type2type_id'][packet_type] = index
         dictionary['type_id2type'][index] = packet_type
+        dictionary['type2name'][packet_type] = packet_type.__name__
         dictionary['name2type'][packet_type.__name__] = packet_type
         dictionary['PacketNames'][index] = name
         dictionary['PacketFactory'][index] = packet_type
