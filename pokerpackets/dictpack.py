@@ -2,12 +2,13 @@
 from traceback import format_exc
 
 from pokerpackets.packets import type2type_id, name2type, type_id2type, PacketError, type2name
-import pokerpackets.networkpackets
-import pokerpackets.clientpackets
+import pokerpackets.networkpackets # pylint: disable=W0611
+import pokerpackets.clientpackets # pylint: disable=W0611
 
 from numbers import Integral
 
 def pack(packet, numeric_type=True):
+    "Pack a packet into a dictionary"
     try:
         packet_dict = {
             'type': type2type_id[packet.__class__] if numeric_type else type2name[packet.__class__]
@@ -17,7 +18,7 @@ def pack(packet, numeric_type=True):
             message="Error converting packet to dict %s: %s" % (repr(packet), format_exc())
         ), numeric_type)
 
-    for attr, default, s_type in packet.__class__.info:
+    for attr, _default, s_type in packet.__class__.info:
         if s_type is 'no net' or attr is 'type':
             continue
 
@@ -34,6 +35,7 @@ def pack(packet, numeric_type=True):
     return packet_dict
 
 def unpack(dict_packet):
+    "Unpack a packet from a dictionary"
     try:
         packet_type_mixed = dict_packet.pop('type')
     except KeyError:
@@ -59,9 +61,9 @@ def unpack(dict_packet):
     except:
         return PacketError(
             message="Unable to instantiate %s(%s): %s" % (packet_type_mixed, dict_packet, format_exc()),
-            other_type = packet_type.type if numeric_type else PacketNames[packet_type.type]
+            other_type = type2type_id[packet_type] if numeric_type else type2name[packet_type]
         )
 
-# compat
-dict2packet = unpack
-packet2dict = pack
+# compat old names
+dict2packet = unpack # pylint: disable=C0103
+packet2dict = pack # pylint: disable=C0103
