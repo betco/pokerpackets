@@ -5,7 +5,8 @@ Maintainer: Andor Goetzendorff <andor@pokermania.de>
 X-Python-Version: >= 2.6, << 3.0
 Build-Depends:
     debhelper,
-    python-all
+    python-all,
+    python-nose
 Standards-Version: 3.9.1
 Homepage: http://github.com/pokermania/poker-packets
 

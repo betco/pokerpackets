@@ -11,4 +11,4 @@ install:
     simplejson
     git+git://github.com/pokermania/reflogging.git
 
-script: nosetests --exe --rednose tests
+script: nosetests --rednose tests
