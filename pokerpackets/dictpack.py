@@ -27,7 +27,7 @@ def pack(packet, numeric_type=True):
 
         elif s_type is 'money':
             money = getattr(packet, attr)
-            packet_dict[attr] = dict([(k if isinstance(k, Integral) else 'X' + k, v) for k, v in money.items()])
+            packet_dict[attr] = dict([('X' + str(k) if isinstance(k, Integral) else k, v) for k, v in money.items()])
 
         else:
             packet_dict[attr] = getattr(packet, attr)
@@ -53,8 +53,11 @@ def unpack(dict_packet):
         if attr not in dict_packet:
             continue
 
-        elif s_type == 'pl' and attr in dict_packet:
+        elif s_type == 'pl':
             dict_packet[attr] = [dict2packet(d)[0] for d in dict_packet[attr]]
+
+        elif s_type == 'money':
+            dict_packet[attr] = dict([(int(k[1:]) if k.startswith('X') else k, v) for k, v in dict_packet[attr].items()])
 
     try:
         return packet_type(**dict_packet), numeric_type
