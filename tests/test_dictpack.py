@@ -8,8 +8,7 @@ import pokerpackets.networkpackets
 def test_pack_unpack():
     "iterates over all packet types, packs and unpacks them and see if the result package equals the original packet"
 
-    def check_pack_unpack(packet_type, numeric_type):
-        packet = packet_type()
+    def check_pack_unpack(packet, numeric_type):
         packed = dictpack.pack(packet, numeric_type)
         assert dictpack.pack(packet, numeric_type) == packed
 
@@ -18,8 +17,14 @@ def test_pack_unpack():
         assert unpack_numeric == numeric_type
 
     for type_id, packet_type in packets.type_id2type.iteritems():
-        yield check_pack_unpack, packet_type, True
-        yield check_pack_unpack, packet_type, False
+
+        if type_id is 92: # PacketPokerUserInfo
+            packet = packet_type(money={1: (10, 11, 12)})
+            yield check_pack_unpack, packet, True
+            yield check_pack_unpack, packet, False
+        else:
+            yield check_pack_unpack, packet_type(), True
+            yield check_pack_unpack, packet_type(), False
 
 def test_unpack_errors():
     # test type not specified

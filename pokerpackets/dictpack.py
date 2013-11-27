@@ -27,7 +27,7 @@ def pack(packet, numeric_type=True):
 
         elif s_type is 'money':
             money = getattr(packet, attr)
-            packet_dict[attr] = dict(zip([(k if isinstance(k, Integral) else 'X' + k, v) for k, v in money.items()]))
+            packet_dict[attr] = dict([(k if isinstance(k, Integral) else 'X' + k, v) for k, v in money.items()])
 
         else:
             packet_dict[attr] = getattr(packet, attr)

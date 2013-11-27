@@ -12,14 +12,18 @@ import pokerpackets.networkpackets
 def test_pack_unpack():
     "iterates over all packet types, packs and unpacks them and see if the result package equals the original packet"
 
-    def check_pack_unpack(packet_type):
-        packet = packet_type()
+    def check_pack_unpack(packet):
         packed = binarypack.pack(packet)
 
         assert binarypack.unpack(packed) == packet
 
     for type_id, packet_type in packets.type_id2type.iteritems():
-        yield check_pack_unpack, packet_type
+
+        if type_id is 92: # PacketPokerUserInfo
+            packet = packet_type(money={1: (10, 11, 12)})
+            yield check_pack_unpack, packet
+        else:
+            yield check_pack_unpack, packet_type()
 
 # private functions
 
