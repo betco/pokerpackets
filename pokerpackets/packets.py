@@ -95,9 +95,7 @@ class Packet:
         if 'type2name' not in dictionary: dictionary['type2name'] = {}
         if 'name2type' not in dictionary: dictionary['name2type'] = {}
         if 'PacketFactory' not in dictionary: dictionary['PacketFactory'] = {}
-        if PACKET_NONE not in dictionary['PacketFactory']: dictionary['PacketFactory'][PACKET_NONE] = Packet
         if 'PacketNames' not in dictionary: dictionary['PacketNames'] = {}
-        if PACKET_NONE not in dictionary['PacketNames']: dictionary['PacketNames'][PACKET_NONE] = "NONE"
 
         # setup _type
         packet_type.type = index

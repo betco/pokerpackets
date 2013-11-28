@@ -1,7 +1,21 @@
 # -*- coding: utf-8 -*-
 
 from pokerpackets import packets
-import sys, unittest
+from nose.tools import nottest
+
+@nottest
+def generate_test_packets():
+    "generate packets suitable for tests"
+    test_kws = {
+        12: dict(packets=[packets.PacketPing()]*3),
+        92: dict(money={1: (10, 11, 12)}),
+    }
+    for type_id, packet_type in packets.PacketFactory.iteritems():
+        if type_id in test_kws:
+            yield packet_type(**test_kws[type_id])
+        else:
+            yield packet_type()
+
 
 def test_find():
     assert packets.find(lambda n: n == 2, [1, 2, 3]) == 2
@@ -40,7 +54,3 @@ def test_infoDeclare():
     assert _dict['PacketNames'][-1] == 'Packet'
     assert _dict['PacketFactory'][-1] == packets.Packet
     assert _dict['PACKET_Packet'] == -1
-
-def test_all_packets():
-    for name, Packet in packets.PacketFactory.iteritems():
-        packet = Packet()

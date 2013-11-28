@@ -3,27 +3,21 @@
 from pokerpackets import binarypack, packets
 from pokerpackets.binarypack import _binarypack
 
+from test_packets import generate_test_packets
+
 # import networkpackets so they get tested as well
 import pokerpackets.networkpackets
-
 
 # public functions
 
 def test_pack_unpack():
-    "iterates over all packet types, packs and unpacks them and see if the result package equals the original packet"
-
     def check_pack_unpack(packet):
+        assert packet.type != -1 
         packed = binarypack.pack(packet)
-
         assert binarypack.unpack(packed) == packet
 
-    for type_id, packet_type in packets.type_id2type.iteritems():
-
-        if type_id is 92: # PacketPokerUserInfo
-            packet = packet_type(money={1: (10, 11, 12)})
-            yield check_pack_unpack, packet
-        else:
-            yield check_pack_unpack, packet_type()
+    for packet in generate_test_packets():
+        yield check_pack_unpack, packet
 
 # private functions
 
