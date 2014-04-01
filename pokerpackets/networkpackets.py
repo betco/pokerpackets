@@ -2229,20 +2229,22 @@ Packet.infoDeclare(globals(), PacketPokerRake, Packet, "POKER_RAKE", 136) # 136 
 
 class PacketPokerTourneyRank(PacketPokerId):
     """\
-    =========== =======================================================================================================================================================================================================
-    Semantics   a :class:`PACKET_POKER_TOURNEY_RANK <pokerpackets.networkpackets.PacketPokerTourneyRank>` sent to the player who leaves the tournament
-    Direction   server  => client
-    serial      serial of the tourney
-    rank        the rank.
-    players     the number of players in this tourney
-    money       the money won
-    =========== =======================================================================================================================================================================================================
+    ================ =======================================================================================================================================================================================================
+    Semantics        a :class:`PACKET_POKER_TOURNEY_RANK <pokerpackets.networkpackets.PacketPokerTourneyRank>` sent to the player who leaves the tournament
+    Direction        server  => client
+    serial           serial of the tourney
+    rank             the rank.
+    players          the number of players in this tourney
+    money            the money won
+    currency_serial  the serial / type of the currency of the money
+    ================ =======================================================================================================================================================================================================
     """
 
     info = PacketPokerId.info + ( 
         ('players', 0, 'I'),
         ('money', 0, 'I'),
         ('rank', 0, 'I'),
+        ('currency_serial', 0, 'I'),
         )
 
 Packet.infoDeclare(globals(), PacketPokerTourneyRank, Packet, "POKER_TOURNEY_RANK", 137) # 137 # 0x89
